@@ -22,6 +22,7 @@ public class MenuPanel {
         JPanel northPanel = new JPanel();
         JPanel menuPanel = new JPanel();
         //menuPanel.setLayout(new GridLayout(3,1));
+        
         GridBagLayout layout = new GridBagLayout();
         menuPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
