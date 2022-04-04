@@ -14,6 +14,7 @@ public class StandAlonePanel {
     private TicTacToeCanvas canvas; 
     public StandAlonePanel(JFrame window){
         this.window = window;
+        window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
     }
 
     public void init(){

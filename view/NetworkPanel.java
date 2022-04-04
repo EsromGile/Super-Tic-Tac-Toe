@@ -19,6 +19,7 @@ public class NetworkPanel {
     private TicTacToeCanvas canvas;
     public NetworkPanel(JFrame window){
         this.window = window; 
+        window.setTitle("Super Tic-Tac-Toe (AI vs. AI)");
     }
 
     public void init(){
