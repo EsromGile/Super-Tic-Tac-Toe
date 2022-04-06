@@ -22,7 +22,7 @@ public class NetworkPanel {
         window.setTitle("Super Tic-Tac-Toe (AI vs. AI)");
     }
 
-    public void init(){
+    public void createNetworkPanel(){
         Container cp = window.getContentPane();
         cp.setPreferredSize(new Dimension(400,450));
         

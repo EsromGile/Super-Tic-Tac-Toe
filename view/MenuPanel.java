@@ -54,7 +54,7 @@ public class MenuPanel {
         standAloneButton.addActionListener(event->{
             window.getContentPane().removeAll();
             var panel = new StandAlonePanel(window);
-            panel.init();
+            panel.createStandAlonePanel();
             window.pack();
             window.setVisible(true);
         });
@@ -62,7 +62,7 @@ public class MenuPanel {
         networkButton.addActionListener(event ->{
             window.getContentPane().removeAll();
             var panel = new NetworkPanel(window);
-            panel.init();
+            panel.createNetworkPanel();
             window.pack();
             window.setVisible(true);
         });

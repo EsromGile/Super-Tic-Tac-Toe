@@ -17,7 +17,7 @@ public class StandAlonePanel {
         window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
     }
 
-    public void init(){
+    public void createStandAlonePanel(){
         Container cp = window.getContentPane();
         cp.setPreferredSize(new Dimension(400,450));
         
