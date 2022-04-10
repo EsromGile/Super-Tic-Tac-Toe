@@ -5,7 +5,14 @@ import java.util.LinkedList;
 import view.NetworkPanel;
 import view.StandAlonePanel;
 
-public class TimerListener implements {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+enum  EventType{
+	// event types
+};
+
+public class TimerListener implements ActionListener {
 	private LinkedList<EventType> eventQueue;
 	private StandAlonePanel saPanel;
 	private NetworkPanel nPanel;

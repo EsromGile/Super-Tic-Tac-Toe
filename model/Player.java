@@ -1,6 +1,8 @@
 package model;
 import java.util.ArrayList;
 
+import org.w3c.dom.events.MouseEvent;
+
 import model.ObserverPattern.Observer;
 
 public class Player extends GamePlayer{
@@ -14,7 +16,7 @@ public class Player extends GamePlayer{
 
 	}
 
-	public void notifyObservers(Event e) {
+	public void notifyObservers(MouseEvent e) {
 
 	}
 
