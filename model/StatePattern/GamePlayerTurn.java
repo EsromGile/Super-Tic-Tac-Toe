@@ -9,7 +9,7 @@ public class GamePlayerTurn {
 	private NetworkPanel nPanel;
 
 	public void goNextState() {
-
+		state.goNext(this);
 	}
 
 	public void setState(GamePlayerState state) {

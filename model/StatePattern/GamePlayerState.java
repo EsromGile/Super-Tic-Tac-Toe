@@ -1,5 +1,5 @@
 package model.StatePattern;
 
-public class GamePlayerState {
-	
+public interface GamePlayerState {
+	void goNext(GamePlayerTurn context);
 }

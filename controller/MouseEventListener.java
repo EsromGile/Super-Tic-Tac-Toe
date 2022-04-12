@@ -21,6 +21,7 @@ public class MouseEventListener implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//Using saPanel for testing, but still need to implement for nPanel
 		
 	}
 
