@@ -8,10 +8,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import controller.MouseEventListener;
+import model.StatePattern.GamePlayerTurn;
+
 public class StandAlonePanel {
 
     private JFrame window; 
     private TicTacToeCanvas canvas; 
+    GamePlayerTurn gamePlayerTurn;
+
     public StandAlonePanel(JFrame window){
         this.window = window;
         window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
@@ -24,6 +29,8 @@ public class StandAlonePanel {
         //main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
         canvas = new TicTacToeCanvas(this);
+        MouseEventListener mouseEventListener = new MouseEventListener(this);
+        canvas.addMouseListener(mouseEventListener);
         mainPanel.add(canvas);
 
         //south panel 
@@ -33,6 +40,9 @@ public class StandAlonePanel {
 
         cp.add(BorderLayout.CENTER, mainPanel);
         cp.add(BorderLayout.SOUTH, southPanel);
+
+        //Start Game
+        gamePlayerTurn = new GamePlayerTurn();              //I'm not exactly sure if this is how you're supposed to start the game but it made sense to me -Vivian
 
         //action listener
         backButton.addActionListener(event->{
@@ -49,4 +59,7 @@ public class StandAlonePanel {
         return canvas;
     }
 
+    public GamePlayerTurn getGamePlayerTurn() {
+        return gamePlayerTurn;
+    }
 }

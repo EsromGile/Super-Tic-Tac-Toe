@@ -7,4 +7,9 @@ public class GamePlayerO implements GamePlayerState {
 		context.setState(new GamePlayerX());			//If the current state is the O player, the next state is the X player
 	}
 
+	@Override
+	public String stateToString() {
+		return "O State";
+	}
+
 }

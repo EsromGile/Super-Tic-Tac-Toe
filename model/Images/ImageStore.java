@@ -12,8 +12,8 @@ public class ImageStore {
     public static BufferedImage oMark;
 
     static {
-        xMark = readImage("model/Images/Kirby_X.png", 40, 40);
-        oMark = readImage("model/Images/Kirby_O", 40, 40);
+        xMark = readImage("model/Images/Kirby_X.png", 70, 70);
+        oMark = readImage("model/Images/Kirby_O.png", 70, 70);
     }
 
     //This function reads in an image from the file using it's path, and resizes it to the given width and height
@@ -32,6 +32,7 @@ public class ImageStore {
         catch(Exception e)
         {
             System.out.println("Image File Load Error");
+            System.out.println(e);
         }
         return null;
     }

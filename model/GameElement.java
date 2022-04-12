@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import model.Images.ImageStore;
+import model.StatePattern.GamePlayerState;
+import model.StatePattern.GamePlayerX;
 
 //This class is mainly used to render the X's and O's
 public class GameElement {
@@ -12,12 +14,12 @@ public class GameElement {
     private int y;
     private BufferedImage image;
 
-    public GameElement(int x, int y, boolean xPlayer) {
+    public GameElement(int x, int y, GamePlayerState state) {
         this.x = x;
         this.y = y;
 
-        //If it is the X player, then the mark rendered is the xMark, otherwise use the oMark
-        if(xPlayer == true) {
+        //If it is the X player's turn, then the mark rendered is the xMark, otherwise use the oMark
+        if(state instanceof GamePlayerX) {
             setImage(ImageStore.xMark);
         }
         else {
@@ -26,7 +28,7 @@ public class GameElement {
     }
 
     public void render(Graphics2D g2) {
-        g2.drawImage(getImage(), null, getX(), getX());
+        g2.drawImage(getImage(), null, getX(), getY());
     }
 
     public BufferedImage getImage() {

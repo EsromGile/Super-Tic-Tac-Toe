@@ -8,6 +8,10 @@ public class GamePlayerTurn {
 	private StandAlonePanel saPanel;
 	private NetworkPanel nPanel;
 
+	public GamePlayerTurn(){ 
+		state = new GamePlayerX();			//The X Player starts first
+	}
+
 	public void goNextState() {
 		state.goNext(this);
 	}
