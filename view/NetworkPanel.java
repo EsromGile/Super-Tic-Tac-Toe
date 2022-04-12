@@ -54,4 +54,8 @@ public class NetworkPanel {
             window.setVisible(true);
         });
     }
+
+    public TicTacToeCanvas getCanvas() {
+        return canvas;
+    }
 }

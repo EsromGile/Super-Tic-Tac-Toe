@@ -45,4 +45,8 @@ public class StandAlonePanel {
 
     }
 
+    public TicTacToeCanvas getCanvas() {
+        return canvas;
+    }
+
 }
