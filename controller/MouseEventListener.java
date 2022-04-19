@@ -38,7 +38,7 @@ public class MouseEventListener implements MouseListener, ActionListener {
 		for(int row = 0; row < 5; row++) {
 			for(int column = 0; column < 5; column++) {
 				if(saPanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
-					if(saPanel.getTicTacToeGame().spotTaken(row, column)) return;
+					if(!saPanel.getTicTacToeGame().spotTaken(row, column)) return;
 					marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
 											  saPanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
 											  saPanel.getGamePlayerTurn().getState()));
