@@ -19,17 +19,35 @@ public class TicTacToe {
 	private TicTacToeSquare[][] grid = new TicTacToeSquare[5][5];
 
 	public TicTacToe() {
+
+		// initial values of x and y
+		int x = 100;
+		int y = 100;
+
 		// all values of grid initialized to 0 (empty)
 		for (int row = 0; row < 5; row++) {
 			for (int col = 0; col < 5; col++) {
 				grid[row][col].entry = 0;
+				grid[row][col].boundingBox = new Rectangle(x, y, 80, 80);
+				x += 80;	// move to next column
 			}
+
+			x = 100;		// reset x to first column when we move to the next row
+			y += 80;		// move to next row
 		}
 	}
 
 
-	public void render() {
-		
+	public Rectangle getBoundingBox(int row, int column) {
+		return grid[row][column].boundingBox;
+	}
+
+	public boolean isEmpty(int row, int column) {
+		if(grid[row][column].entry == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
