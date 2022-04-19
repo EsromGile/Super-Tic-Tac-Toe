@@ -51,6 +51,20 @@ public class TicTacToeCanvas extends JPanel {
             g2.drawLine(110, i, 490, i);
         }
 
+        // //Testing out how to initialize bounding boxes
+        // g2.setColor(Color.RED);
+        // int x = 100;
+        // int y = 100;
+        // for(int row = 0; row < 5; row++) {
+        //     for(int column = 0; column < 5; column++) {
+        //         g2.drawRect(x, y, 80, 80);
+        //         y += 80;
+        //     }
+        //     y = 100;
+        //     x += 80;
+        // }
+
+
         //Render Marks
         for(var m: marks) {
             m.render(g2);
