@@ -21,7 +21,7 @@ public class TicTacToeCanvas extends JPanel {
     public TicTacToeCanvas(StandAlonePanel saPanel) {
         this.saPanel = saPanel;
         setPreferredSize(new Dimension(600, 600));
-        setBackground(Color.black);
+        setBackground(new Color(147, 204, 133));
     }
 
     public TicTacToeCanvas(NetworkPanel nPanel) {
@@ -36,7 +36,7 @@ public class TicTacToeCanvas extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         //Turn Indicator
-        g2.setColor(Color.BLUE);
+        g2.setColor(new Color(48, 99, 35));
         g2.setFont(new Font("Courier", Font.BOLD, 40));
         if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)
             g2.drawString("X's Turn...", 170, 60);
@@ -44,7 +44,7 @@ public class TicTacToeCanvas extends JPanel {
             g2.drawString("O's Turn...", 170, 60);
 
         //Tic Tac Toe Board
-        g2.setColor(Color.white);
+        g2.setColor(new Color(48, 99, 35));
         g2.setStroke(new BasicStroke(3));
         for (int i = 180; i < 500; i+=80) {
             g2.drawLine(i, 110, i, 490);
@@ -71,7 +71,7 @@ public class TicTacToeCanvas extends JPanel {
         }
 
         //Timer
-        g2.setColor(Color.BLUE);
+        g2.setColor(new Color(48, 99, 35));
         g2.setFont(new Font("Courier", Font.BOLD, 30));
         g2.drawString("Time Remaining: ", 140, 550);
 

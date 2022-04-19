@@ -12,7 +12,7 @@ public class ImageStore {
     public static BufferedImage oMark;
 
     static {
-        xMark = readImage("model/Images/Kirby_X.png", 70, 70);
+        xMark = readImage("model/Images/Kirby_X_2.png", 70, 70);
         oMark = readImage("model/Images/Kirby_O.png", 70, 70);
     }
 
