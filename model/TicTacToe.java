@@ -67,4 +67,56 @@ public class TicTacToe {
 	public TicTacToeSquare[][] getGrid() {
 		return grid;
 	}
+
+	public boolean spotTaken(int x, int y){
+		if(grid[x][y].entry == 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean checkWin(int player){
+		boolean rwin = true;
+		boolean cwin = true;
+		boolean dwin = false;
+		for (int row = 0; row < 5; row++) {
+			rwin = true;
+			for (int col = 0; col < 5; col++) {
+				if(grid[row][col].entry != player){
+					rwin = false;
+				}
+			}
+			if(rwin) break;
+		}
+		for (int col = 0; col < 5; col++) {
+			cwin = true;
+			for (int row = 0; row < 5; row++) {
+				if(grid[row][col].entry != player){
+					cwin = false;
+				}
+			}
+			if(cwin) break;
+		}
+
+		if(grid[0][0].entry == player && grid[1][1].entry == player 
+			&& grid[2][2].entry == player && grid[3][3].entry == player
+			&& grid[4][4].entry == player) dwin = true;
+
+		if(grid[0][4].entry == player && grid[1][3].entry == player 
+			&& grid[2][2].entry == player && grid[3][1].entry == player
+			&& grid[4][0].entry == player) dwin = true;
+
+		if(rwin){
+			System.out.println("Player " + player + " wins rows");
+		}
+		if(cwin){
+			System.out.println("Player " + player + " wins cols");
+		}
+		if(dwin){
+			System.out.println("Player " + player + " wins diag");
+		}
+		return true;
+	}
 }
+
