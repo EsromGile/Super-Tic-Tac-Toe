@@ -1,3 +1,9 @@
+/*
+ *	Last Updated By: Eli
+ * 	NOTES: this is just a rough draft for the logic of determining a win or draw 
+ * 	P.S. If it's bad please don't yell at me... 
+ */
+
 package model.ObserverPattern;
 
 import model.TicTacToe;
