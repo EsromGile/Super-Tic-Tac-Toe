@@ -24,7 +24,7 @@ public class NetworkPanel {
 
     public void createNetworkPanel(){
         Container cp = window.getContentPane();
-        cp.setPreferredSize(new Dimension(400,450));
+        cp.setPreferredSize(new Dimension(600,650));
         
         //main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
