@@ -64,4 +64,7 @@ public class TicTacToe {
 		}
 	}
 	
+	public TicTacToeSquare[][] getGrid() {
+		return grid;
+	}
 }
