@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import model.GameElement;
+import model.StatePattern.GamePlayerX;
 
 public class MouseEventListener implements MouseListener, ActionListener {
 	
@@ -34,14 +35,25 @@ public class MouseEventListener implements MouseListener, ActionListener {
 		ArrayList<GameElement> marks = saPanel.getCanvas().getMarks();
 
 		//Add code here for checking which grid position the mouse clicked within, and adding the mark into the array
+		for(int row = 0; row < 5; row++) {
+			for(int column = 0; column < 5; column++) {
+				if(saPanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
+					marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
+											  saPanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
+											  saPanel.getGamePlayerTurn().getState()));
+					if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+						saPanel.getTicTacToeGame().setEntry(row, column, 1);	//Set to X
+					} else {
+						saPanel.getTicTacToeGame().setEntry(row, column, 2);	//Set to O
+					}
+				}
+			}
+		}
 
-		//This code currently places the mark wherever the mouse clicks, 
-		//but in the future, the mark should be placed in the middle fo the grid position that the mouse clicked within
-		marks.add(new GameElement(e.getX() - 35, e.getY() - 35, saPanel.getGamePlayerTurn().getState()));
-		System.out.println(saPanel.getGamePlayerTurn().getState().stateToString());
 		saPanel.getCanvas().repaint();
 
 		//Add code here for checking for a win/draw
+		saPanel.getTicTacToeGame().printGameBoard();
 		
 		//After the player places the mark, and the game is still in play, it goes to the next turn
 		saPanel.getGamePlayerTurn().goNextState();

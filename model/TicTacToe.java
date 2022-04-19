@@ -27,6 +27,7 @@ public class TicTacToe {
 		// all values of grid initialized to 0 (empty)
 		for (int row = 0; row < 5; row++) {
 			for (int col = 0; col < 5; col++) {
+				grid[row][col] = new TicTacToeSquare();
 				grid[row][col].entry = 0;
 				grid[row][col].boundingBox = new Rectangle(x, y, 80, 80);
 				x += 80;	// move to next column
@@ -47,6 +48,19 @@ public class TicTacToe {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public void setEntry(int row, int column, int newEntry) {
+		grid[row][column].entry = newEntry;
+	}
+
+	public void printGameBoard() {
+		for (int row = 0; row < 5; row++) {
+			for (int col = 0; col < 5; col++) {
+				System.out.print("[" + grid[row][col].entry + "]");
+			}
+			System.out.println();
 		}
 	}
 	
