@@ -17,6 +17,7 @@ public class TicTacToeCanvas extends JPanel {
     private StandAlonePanel saPanel;
     private NetworkPanel nPanel;
     private ArrayList<GameElement> marks = new ArrayList<>();
+    private int secondsLeft;
 
     public TicTacToeCanvas(StandAlonePanel saPanel) {
         this.saPanel = saPanel;
@@ -51,20 +52,6 @@ public class TicTacToeCanvas extends JPanel {
             g2.drawLine(110, i, 490, i);
         }
 
-        // //Testing out how to initialize bounding boxes
-        // g2.setColor(Color.RED);
-        // int x = 100;
-        // int y = 100;
-        // for(int row = 0; row < 5; row++) {
-        //     for(int column = 0; column < 5; column++) {
-        //         g2.drawRect(x, y, 80, 80);
-        //         x += 80;
-        //     }
-        //     x = 100;
-        //     y += 80;
-        // }
-
-
         //Render Marks
         for(var m: marks) {
             m.render(g2);
@@ -73,13 +60,17 @@ public class TicTacToeCanvas extends JPanel {
         //Timer
         g2.setColor(new Color(48, 99, 35));
         g2.setFont(new Font("Courier", Font.BOLD, 30));
-        g2.drawString("Time Remaining: ", 140, 550);
+        g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
 
 
     }
 
     public ArrayList<GameElement> getMarks() {
         return marks;
+    }
+
+    public void setSecondsLeft(int secondsLeft) {
+        this.secondsLeft = secondsLeft;
     }
 
 }

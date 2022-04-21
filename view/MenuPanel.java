@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import model.GamePlayer;
+
 public class MenuPanel {
     private JFrame window; 
     public MenuPanel(JFrame window){

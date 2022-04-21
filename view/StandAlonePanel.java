@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.MouseEventListener;
+import model.GamePlayer;
 import model.TicTacToe;
 import model.StatePattern.GamePlayerTurn;
 
@@ -16,8 +17,9 @@ public class StandAlonePanel {
 
     private JFrame window; 
     private TicTacToeCanvas canvas; 
-    GamePlayerTurn gamePlayerTurn;
-    TicTacToe ticTacToeGame;
+    private GamePlayerTurn gamePlayerTurn;
+    private TicTacToe ticTacToeGame;
+    private GamePlayer gamePlayer;
 
     public StandAlonePanel(JFrame window){
         this.window = window;
@@ -45,8 +47,9 @@ public class StandAlonePanel {
 
         //Start Game
         //I'm not exactly sure if this is how you're supposed to start the game but it made sense to me -Vivian
-        gamePlayerTurn = new GamePlayerTurn();   
-        ticTacToeGame = new TicTacToe();          
+        gamePlayer = new GamePlayer(); 
+        gamePlayerTurn = new GamePlayerTurn(this); 
+        ticTacToeGame = new TicTacToe();         
 
         //action listener
         backButton.addActionListener(event->{
@@ -69,5 +72,9 @@ public class StandAlonePanel {
 
     public TicTacToe getTicTacToeGame() {
         return ticTacToeGame;
+    }
+
+    public GamePlayer getGamePlayer() {
+        return gamePlayer;
     }
 }
