@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import model.GameElement;
+import model.StatePattern.GamePlayerO;
 import model.StatePattern.GamePlayerX;
 
 public class MouseEventListener implements MouseListener, ActionListener {
@@ -30,34 +31,45 @@ public class MouseEventListener implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("X: " + e.getX() + ", Y: " + e.getY());
+		
 		//Using saPanel for testing, but still need to implement for nPanel
 		ArrayList<GameElement> marks = saPanel.getCanvas().getMarks();
 
-		//Add code here for checking which grid position the mouse clicked within, and adding the mark into the array
-		for(int row = 0; row < 5; row++) {
-			for(int column = 0; column < 5; column++) {
-				if(saPanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
-					if(!saPanel.getTicTacToeGame().spotTaken(row, column)) return;
-					marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
-											  saPanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
-											  saPanel.getGamePlayerTurn().getState()));
-					if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-						saPanel.getTicTacToeGame().setEntry(row, column, 1);	//Set to X
-					} else {
-						saPanel.getTicTacToeGame().setEntry(row, column, 2);	//Set to O
+
+		/* 
+			Note: the commented out if statement is to not allow the player to click when it's the AI's turn,
+			but since we haven't implemented the AI yet, I have it commented out, so we can still do some testing
+			and not have the game freeze.
+			-Viviam
+		*/
+		// //If the player is X and it is X's turn, or if the player is O and it is O's turn, allow the player to click
+		// if((saPanel.getGamePlayer().xPlayer == true && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) ||
+		//    (saPanel.getGamePlayer().xPlayer == false && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerO)) {
+
+			for(int row = 0; row < 5; row++) {
+				for(int column = 0; column < 5; column++) {
+					if(saPanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
+						if(!saPanel.getTicTacToeGame().spotTaken(row, column)) return;
+						marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
+												saPanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
+												saPanel.getGamePlayerTurn().getState()));
+						if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+							saPanel.getTicTacToeGame().setEntry(row, column, 1);	//Set to X
+						} else {
+							saPanel.getTicTacToeGame().setEntry(row, column, 2);	//Set to O
+						}
 					}
 				}
 			}
-		}
 
-		saPanel.getCanvas().repaint();
+			saPanel.getCanvas().repaint();
 
-		//Add code here for checking for a win/draw
-		saPanel.getTicTacToeGame().printGameBoard();
-		
-		//After the player places the mark, and the game is still in play, it goes to the next turn
-		saPanel.getGamePlayerTurn().goNextState();
+			//Add code here for checking for a win/draw
+			saPanel.getTicTacToeGame().printGameBoard();
+			
+			//After the player places the mark, and the game is still in play, it goes to the next turn
+			saPanel.getGamePlayerTurn().goNextState();
+		//}
 
 	}
 

@@ -66,16 +66,21 @@ public class GamePlayerTurn {
 		}
 
 		Timer timer = new Timer();
+
 		timer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
+				if(seconds <= 0) {
+					timer.cancel();
+					timer.purge();
+				}
 				saPanel.getCanvas().setSecondsLeft(seconds);
 				seconds--;
 				saPanel.getCanvas().repaint();
 			}
 			
-		}, 0, 2500);
+		}, 0, 1000);
 
 	}
 
