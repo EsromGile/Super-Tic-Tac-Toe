@@ -80,6 +80,7 @@ public class TicTacToe {
 		boolean rwin = true;
 		boolean cwin = true;
 		boolean dwin = false;
+		//Check for win on rows
 		for (int row = 0; row < 5; row++) {
 			rwin = true;
 			for (int col = 0; col < 5; col++) {
@@ -89,6 +90,7 @@ public class TicTacToe {
 			}
 			if(rwin) break;
 		}
+		//Check for win on columns
 		for (int col = 0; col < 5; col++) {
 			cwin = true;
 			for (int row = 0; row < 5; row++) {
@@ -99,6 +101,7 @@ public class TicTacToe {
 			if(cwin) break;
 		}
 
+		//Check for win on diagnal
 		if(grid[0][0].entry == player && grid[1][1].entry == player 
 			&& grid[2][2].entry == player && grid[3][3].entry == player
 			&& grid[4][4].entry == player) dwin = true;

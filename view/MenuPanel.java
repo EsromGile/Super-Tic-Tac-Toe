@@ -7,10 +7,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class MenuPanel {
     private JFrame window; 
@@ -21,6 +23,7 @@ public class MenuPanel {
         Container cp = window.getContentPane();
         JPanel northPanel = new JPanel();
         JPanel menuPanel = new JPanel();
+        JPanel southPanel = new JPanel();
         //menuPanel.setLayout(new GridLayout(3,1));
         
         GridBagLayout layout = new GridBagLayout();
@@ -48,8 +51,18 @@ public class MenuPanel {
         JButton networkButton = new JButton("Network");
         menuPanel.add(networkButton, gbc);
 
+        JRadioButton playerOne = new JRadioButton("Player X");
+        JRadioButton playerTwo = new JRadioButton("Player O");
+        southPanel.add(playerOne);
+        southPanel.add(playerTwo);
+        ButtonGroup playerGroup = new ButtonGroup();
+        playerGroup.add(playerOne);
+        playerGroup.add(playerTwo);
+        playerOne.setSelected(true);
+
         cp.add(BorderLayout.NORTH, northPanel);
         cp.add(BorderLayout.CENTER, menuPanel);
+        cp.add(BorderLayout.SOUTH, southPanel);
 
         standAloneButton.addActionListener(event->{
             window.getContentPane().removeAll();
