@@ -9,7 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.MouseEventListener;
+import controller.TimerListener;
+import model.AI;
 import model.GamePlayer;
+import model.Player;
 import model.TicTacToe;
 import model.StatePattern.GamePlayerTurn;
 
@@ -20,10 +23,14 @@ public class StandAlonePanel {
     private GamePlayerTurn gamePlayerTurn;
     private TicTacToe ticTacToeGame;
     private GamePlayer gamePlayer;
+    private boolean playerX;
+    private AI aiPlayer = new AI(this);
+    private Player manPlayer = new Player(this); 
 
-    public StandAlonePanel(JFrame window){
+    public StandAlonePanel(JFrame window, boolean playerX){
         this.window = window;
         window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
+        this.playerX = playerX;
     }
 
     public void createStandAlonePanel(){
@@ -49,7 +56,8 @@ public class StandAlonePanel {
         //I'm not exactly sure if this is how you're supposed to start the game but it made sense to me -Vivian
         gamePlayer = new GamePlayer(); 
         gamePlayerTurn = new GamePlayerTurn(this); 
-        ticTacToeGame = new TicTacToe();         
+        ticTacToeGame = new TicTacToe();      
+        TimerListener timerListener = new TimerListener(this);   
 
         //action listener
         backButton.addActionListener(event->{
@@ -59,6 +67,7 @@ public class StandAlonePanel {
             window.pack();
             window.setVisible(true);
         });
+        aiPlayer.takeTurn();
 
     }
 
@@ -76,5 +85,17 @@ public class StandAlonePanel {
 
     public GamePlayer getGamePlayer() {
         return gamePlayer;
+    }
+
+    public boolean getPlayerX(){
+        return playerX;
+    }
+
+	public AI getAiPlayer() {
+		return aiPlayer;
+	}
+
+    public Player getManPlayer() {
+        return manPlayer;
     }
 }

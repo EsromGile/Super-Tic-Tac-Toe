@@ -17,6 +17,11 @@ public class TimerListener implements ActionListener {
 	private StandAlonePanel saPanel;
 	private NetworkPanel nPanel;
 
+	public TimerListener(StandAlonePanel saPanel){
+		this.saPanel= saPanel;
+		eventQueue = new LinkedList<>();
+	}
+
 	public void actionPerformed(ActionEvent e) {
 
 	}
@@ -26,7 +31,7 @@ public class TimerListener implements ActionListener {
 	}
 
 	public void update() {
-
+		
 	}
 
 	public void statTimer() {

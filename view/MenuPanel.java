@@ -68,7 +68,7 @@ public class MenuPanel {
 
         standAloneButton.addActionListener(event->{
             window.getContentPane().removeAll();
-            var panel = new StandAlonePanel(window);
+            var panel = new StandAlonePanel(window, playerOne.isSelected());
             panel.createStandAlonePanel();
             window.pack();
             window.setVisible(true);
