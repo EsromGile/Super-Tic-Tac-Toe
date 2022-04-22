@@ -61,9 +61,16 @@ public class TicTacToeCanvas extends JPanel {
         //Timer only displays when it is the player's turn
         if((saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) ||
            (!saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerO)) {
+
             g2.setColor(new Color(48, 99, 35));
             g2.setFont(new Font("Courier", Font.BOLD, 30));
-            g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
+
+            if(secondsLeft >= 0) {
+                g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
+            }
+            else {
+                g2.drawString("Time Remaining: 0", 140, 550);
+            }
         }
 
     }
