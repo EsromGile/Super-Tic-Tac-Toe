@@ -96,7 +96,6 @@ public class AI extends GamePlayer {
 			saPanel.getCanvas().repaint();
 
 			//saPanel.getGamePlayerTurn().goNextState();
-
 			
 		}
 	}

@@ -69,12 +69,12 @@ public class MenuPanel {
 
         sgbc.gridx = 0; 
         sgbc.gridy = 1;
-        JRadioButton playerOne = new JRadioButton("Player X");
+        JRadioButton playerOne = new JRadioButton("Player X (Go First)");
         southPanel.add(playerOne, sgbc);
 
         sgbc.gridx = 2; 
         sgbc.gridy = 1;
-        JRadioButton playerTwo = new JRadioButton("Player O");
+        JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
         southPanel.add(playerTwo, sgbc);
 
         ButtonGroup playerGroup = new ButtonGroup();

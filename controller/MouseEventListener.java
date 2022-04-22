@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import model.GameElement;
 import model.StatePattern.GamePlayerO;
+import model.StatePattern.GamePlayerState;
 import model.StatePattern.GamePlayerX;
 
 public class MouseEventListener implements MouseListener, ActionListener {
@@ -32,6 +33,7 @@ public class MouseEventListener implements MouseListener, ActionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//Moved turn code to Player.java
+		if(!saPanel.getGamePlayerTurn().getCanClick()) return;
 		if(saPanel.getManPlayer().takeTurn(e)) return;
 		//AI takes turn after player goes
 		saPanel.getAiPlayer().takeTurn();
