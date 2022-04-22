@@ -62,7 +62,6 @@ public class TicTacToeCanvas extends JPanel {
         g2.setFont(new Font("Courier", Font.BOLD, 30));
         g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
 
-
     }
 
     public ArrayList<GameElement> getMarks() {

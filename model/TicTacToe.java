@@ -3,8 +3,16 @@ package model;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import model.ObserverPattern.Observer;
+import model.ObserverPattern.Subject;
 
-public class TicTacToe {
+
+public class TicTacToe implements Subject{
+
+	public enum Event {
+		WinDetected, DrawDetected
+	};
+	ArrayList<Observer> observers = new ArrayList<>();
 
 	public class TicTacToeSquare {
 		private Rectangle boundingBox; 		//boundingBox refers to the area on the canvas that the square covers
@@ -38,7 +46,6 @@ public class TicTacToe {
 		}
 	}
 
-
 	public Rectangle getBoundingBox(int row, int column) {
 		return grid[row][column].boundingBox;
 	}
@@ -69,57 +76,141 @@ public class TicTacToe {
 	}
 
 	public boolean spotTaken(int x, int y){
-		if(grid[x][y].entry == 0){
-			return true;
-		} else {
-			return false;
-		}
+		return isEmpty(x, y);	// not sure why this is??
 	}
 
-	public boolean checkWin(int player){
-		boolean rwin = true;
-		boolean cwin = true;
-		boolean dwin = false;
-		//Check for win on rows
+	// draw only happens when all spots are full
+	public void checkDraw() {
 		for (int row = 0; row < 5; row++) {
-			rwin = true;
 			for (int col = 0; col < 5; col++) {
-				if(grid[row][col].entry != player){
-					rwin = false;
-				}
+				if (grid[row][col].entry == 0)
+					return;
 			}
-			if(rwin) break;
 		}
-		//Check for win on columns
-		for (int col = 0; col < 5; col++) {
-			cwin = true;
-			for (int row = 0; row < 5; row++) {
-				if(grid[row][col].entry != player){
-					cwin = false;
-				}
-			}
-			if(cwin) break;
-		}
-
-		//Check for win on diagnal
-		if(grid[0][0].entry == player && grid[1][1].entry == player 
-			&& grid[2][2].entry == player && grid[3][3].entry == player
-			&& grid[4][4].entry == player) dwin = true;
-
-		if(grid[0][4].entry == player && grid[1][3].entry == player 
-			&& grid[2][2].entry == player && grid[3][1].entry == player
-			&& grid[4][0].entry == player) dwin = true;
-
-		if(rwin){
-			System.out.println("Player " + player + " wins rows");
-		}
-		if(cwin){
-			System.out.println("Player " + player + " wins cols");
-		}
-		if(dwin){
-			System.out.println("Player " + player + " wins diag");
-		}
-		return true;
+		notifyObservers(Event.DrawDetected);
 	}
+
+	public void checkWin(){
+
+		boolean isWin = false;
+
+		isWin = checkLeftDiagonal() || checkRightDiagonal();
+
+		int index = 0;
+		while (!isWin && index < 5) {
+			isWin = checkColumn(index) || checkRow(index);
+			index++;
+		}
+
+		if(isWin) notifyObservers(Event.WinDetected);
+	}
+
+	@Override
+	public void subscribe(Observer o) {
+		observers.add(o);
+	}
+
+	@Override
+	public void unsubscribe(Observer o) {
+		observers.remove(o);
+	}
+
+	@Override
+	public void notifyObservers(Event event) {
+		switch(event) {
+			case WinDetected:
+				for (var o: observers) 
+					o.winCondition();
+				break;
+			case DrawDetected:
+				for (var o: observers)
+					o.drawCondition();
+				break;
+		}
+	}
+
+	// ------------------
+    //  Auxilary Methods
+    // ------------------
+
+	private boolean checkLeftDiagonal() {
+
+		int countX = 0;
+		int countO = 0;
+
+        for (int index = 0; index < 5; index++) {
+			int entry = grid[index][index].entry; 
+			if (entry == 0)
+				return false;
+			else if (entry == 1)
+				countX++;
+			else
+				countO++;
+        } 
+		if (countO == 5 || countX == 5) 
+			return true;
+		else 
+			return false;
+    }
+
+    private boolean checkRightDiagonal() {
+
+		int countX = 0;
+		int countO = 0;
+
+        for (int index = 0; index < 5; index++) {
+            int entry = grid[index][4 - index].entry; 
+			if (entry == 0)
+				return false;
+			else if (entry == 1)
+				countX++;
+			else
+				countO++;
+        } 
+        if (countO == 5 || countX == 5) 
+			return true;
+		else 
+			return false;
+    }
+
+    private boolean checkRow(int rowNumber) {
+
+		int countX = 0;
+		int countO = 0;
+
+        for (int index = 0; index < 5; index++) {
+			int entry = grid[rowNumber][index].entry;
+            if (entry == 0)
+				return false;
+			else if (entry == 1)
+				countX++;
+			else
+				countO++;
+        }
+		if (countX == 5 || countO == 5) 
+			return true;
+		else 
+			return false;
+    }
+
+    private boolean checkColumn(int columnNumber) {
+
+		int countX = 0;
+		int countO = 0;
+
+        for (int index = 0; index < 5; index++) {
+			int entry = grid[index][columnNumber].entry;
+			if (entry == 0)
+			return false;
+		else if (entry == 1)
+			countX++;
+		else
+			countO++;
+		}
+		if (countX == 5 || countO == 5) 
+			return true;
+		else 
+			return false;
+    }
 }
 

@@ -46,7 +46,9 @@ public class Player extends GamePlayer{
 
 						saPanel.getCanvas().repaint();
 						saPanel.getTicTacToeGame().printGameBoard();					
-						//To Do update Observer
+						
+						saPanel.getTicTacToeGame().checkWin();
+						saPanel.getTicTacToeGame().checkDraw();
 						
 						//After the player places the mark, and the game is still in play, it goes to the next turn
 						saPanel.getGamePlayerTurn().goNextState();

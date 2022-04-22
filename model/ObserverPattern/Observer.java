@@ -1,5 +1,6 @@
 package model.ObserverPattern;
 
-public class Observer {
-	
+public interface Observer {
+	void winCondition();
+    void drawCondition();
 }

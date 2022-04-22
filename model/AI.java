@@ -59,6 +59,9 @@ public class AI extends GamePlayer {
 	
 			//Add code here for checking for a win/draw
 			saPanel.getTicTacToeGame().printGameBoard();
+
+			saPanel.getTicTacToeGame().checkWin();
+			saPanel.getTicTacToeGame().checkDraw();
 			
 			//To Do update Observer
 			
