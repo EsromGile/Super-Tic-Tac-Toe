@@ -102,7 +102,8 @@ public class TicTacToe implements Subject{
 			index++;
 		}
 
-		if(isWin) notifyObservers(Event.WinDetected);
+		if(isWin) 
+			notifyObservers(Event.WinDetected);
 	}
 
 	@Override

@@ -41,12 +41,10 @@ public class AI extends GamePlayer {
 		Random r = new Random();
 		x = r.nextInt(5);
 		y = r.nextInt(5);
-		System.out.println(x + " " + y);
 
 		while(!saPanel.getTicTacToeGame().spotTaken(x, y)){
 			x = r.nextInt(5);
 			y = r.nextInt(5);
-			System.out.println(x + " " + y);
 		}
 
 		if((saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {

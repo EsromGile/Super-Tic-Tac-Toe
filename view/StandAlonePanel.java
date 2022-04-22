@@ -14,6 +14,7 @@ import model.AI;
 import model.GamePlayer;
 import model.Player;
 import model.TicTacToe;
+import model.ObserverPattern.GameElementObserver;
 import model.StatePattern.GamePlayerTurn;
 
 public class StandAlonePanel {
@@ -57,6 +58,8 @@ public class StandAlonePanel {
         gamePlayer = new GamePlayer(); 
         gamePlayerTurn = new GamePlayerTurn(this); 
         ticTacToeGame = new TicTacToe();      
+        GameElementObserver observer = new GameElementObserver(this);
+        ticTacToeGame.subscribe(observer);
         TimerListener timerListener = new TimerListener(this);   
 
         //action listener
