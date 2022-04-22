@@ -56,7 +56,7 @@ public class StandAlonePanel {
         //Start Game
         //I'm not exactly sure if this is how you're supposed to start the game but it made sense to me -Vivian
         gamePlayer = new GamePlayer(); 
-        gamePlayerTurn = new GamePlayerTurn(this, playerX); 
+        gamePlayerTurn = new GamePlayerTurn(this); 
         ticTacToeGame = new TicTacToe();      
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);

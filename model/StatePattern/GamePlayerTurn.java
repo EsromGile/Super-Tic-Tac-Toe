@@ -13,10 +13,10 @@ public class GamePlayerTurn {
 	private boolean canClick;
 	private int seconds = 30;			//Player will be allowed 30 seconds per turn
 
-	public GamePlayerTurn(StandAlonePanel saPanel, boolean canClick){ 
+	public GamePlayerTurn(StandAlonePanel saPanel){ 
 		this.saPanel = saPanel;
 		state = new GamePlayerX(this);			//The X Player starts first
-		this.canClick = canClick;
+		canClick = saPanel.getPlayerX();
 	}
 
 	public void goNextState() {
