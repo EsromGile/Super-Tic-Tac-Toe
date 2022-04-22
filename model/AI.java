@@ -1,7 +1,11 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import org.w3c.dom.events.MouseEvent;
 
@@ -12,6 +16,9 @@ import view.StandAlonePanel;
 public class AI extends GamePlayer {
 	private ArrayList<Observer> observers;
 	private StandAlonePanel saPanel;
+	private int seconds;
+	private int x;
+	private int y;
 
 	public AI(StandAlonePanel saPanel){
 		this.saPanel = saPanel;
@@ -32,28 +39,37 @@ public class AI extends GamePlayer {
 	public void takeTurn() {
 		// Sample "AI" Turn
 		Random r = new Random();
-		int x = r.nextInt(5);
-		int y = r.nextInt(5);
+		x = r.nextInt(5);
+		y = r.nextInt(5);
 		System.out.println(x + " " + y);
+
 		while(!saPanel.getTicTacToeGame().spotTaken(x, y)){
 			x = r.nextInt(5);
 			y = r.nextInt(5);
 			System.out.println(x + " " + y);
 		}
-		if((saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)){
-			//Using saPanel for testing, but still need to implement for nPanel
+
+		if((saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
+
 			ArrayList<GameElement> marks = saPanel.getCanvas().getMarks();
-		
-						// if(!saPanel.getTicTacToeGame().spotTaken(x, y)) return;
-							marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(x, y).x,
-														  saPanel.getTicTacToeGame().getBoundingBox(x, y).y, 
-														  saPanel.getGamePlayerTurn().getState()));
-						if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-							saPanel.getTicTacToeGame().setEntry(x, y, 1);	//Set to X
-						} else {
-							saPanel.getTicTacToeGame().setEntry(x, y, 2);	//Set to O
-						}
-			
+
+			//Adds a 1.5 second delay before the AI places its mark
+			Timer timer1 = new Timer();
+			timer1.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(x, y).x + 5,
+										saPanel.getTicTacToeGame().getBoundingBox(x, y).y + 5, 
+										saPanel.getGamePlayerTurn().getState()));
+					if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+						saPanel.getTicTacToeGame().setEntry(x, y, 1);	//Set to X
+					} else {
+						saPanel.getTicTacToeGame().setEntry(x, y, 2);	//Set to O
+					}
+					timer1.cancel();
+					timer1.purge();
+				}
+			}, 1500);
 	
 			saPanel.getCanvas().repaint();
 	
@@ -66,8 +82,22 @@ public class AI extends GamePlayer {
 			//To Do update Observer
 			
 			
-			//After the player places the mark, and the game is still in play, it goes to the next turn
-			saPanel.getGamePlayerTurn().goNextState();
+			//After the AI places mark, delay for 5 seconds, then go to next state
+			Timer timer2 = new Timer();
+
+			timer2.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					saPanel.getGamePlayerTurn().goNextState();
+					System.out.print("Timer Ended");
+					timer2.cancel();
+					timer2.purge();
+				}
+			}, 5000L);
+
+			saPanel.getCanvas().repaint();
+
+			//saPanel.getGamePlayerTurn().goNextState();
 
 			
 		}

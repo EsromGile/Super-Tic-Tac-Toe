@@ -11,6 +11,7 @@ import java.awt.BasicStroke;
 import javax.swing.JPanel;
 
 import model.GameElement;
+import model.StatePattern.GamePlayerO;
 import model.StatePattern.GamePlayerX;
 
 public class TicTacToeCanvas extends JPanel {
@@ -57,10 +58,13 @@ public class TicTacToeCanvas extends JPanel {
             m.render(g2);
         }
 
-        //Timer
-        g2.setColor(new Color(48, 99, 35));
-        g2.setFont(new Font("Courier", Font.BOLD, 30));
-        g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
+        //Timer only displays when it is the player's turn
+        if((saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) ||
+           (!saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerO)) {
+            g2.setColor(new Color(48, 99, 35));
+            g2.setFont(new Font("Courier", Font.BOLD, 30));
+            g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
+        }
 
     }
 

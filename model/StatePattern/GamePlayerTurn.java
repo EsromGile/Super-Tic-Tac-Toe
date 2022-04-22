@@ -10,7 +10,7 @@ public class GamePlayerTurn {
 	private GamePlayerState state;
 	private StandAlonePanel saPanel;
 	private NetworkPanel nPanel;
-	private int seconds;
+	private int seconds = 30;			//Player will be allowed 30 seconds per turn
 
 	public GamePlayerTurn(StandAlonePanel saPanel){ 
 		this.saPanel = saPanel;
@@ -38,32 +38,7 @@ public class GamePlayerTurn {
 	}
 
 	public void startTurnCountdown() {
-		/* 
-			Player will be allowed 30 seconds per turn.
-			AI will be allowed 5 seconds per turn.
-		*/
-
-
-		/*
-			I have absolutely no idea why, but the times have to be swapped for it to work???????
-			-Vivian
-		*/
-		if(saPanel.getGamePlayer().xPlayer == true) {		//If the player is X Player
-			if(state instanceof GamePlayerX) {				//and it is X Player's turn
-				seconds = 5;
-			}
-			else {											//O Player's turn
-				seconds = 30;
-			}
-		}
-		else {												//If the player is the O Player
-			if(state instanceof GamePlayerX) {				// and it is X Player's turn
-				seconds = 30;
-			}
-			else {											//O Player's turn
-				seconds = 5;
-			}
-		}
+		seconds = 30;
 
 		Timer timer = new Timer();
 
@@ -79,7 +54,7 @@ public class GamePlayerTurn {
 				seconds--;
 				saPanel.getCanvas().repaint();
 			}
-			
+	
 		}, 0, 1000);
 
 	}
