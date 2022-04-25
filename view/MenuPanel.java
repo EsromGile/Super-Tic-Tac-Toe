@@ -106,8 +106,8 @@ public class MenuPanel {
 
         networkButton.addActionListener(event ->{
             window.getContentPane().removeAll();
-            var panel = new NetworkPanel(window);
-            panel.createNetworkPanel();
+            var panel = new StandAlonePanel(window, playerOne.isSelected());
+            panel.createStandAlonePanel();
             window.pack();
             window.setVisible(true);
         });

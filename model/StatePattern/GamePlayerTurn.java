@@ -3,13 +3,11 @@ package model.StatePattern;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import view.NetworkPanel;
 import view.StandAlonePanel;
 
 public class GamePlayerTurn {
 	private GamePlayerState state;
 	private StandAlonePanel saPanel;
-	private NetworkPanel nPanel;
 	private boolean canClick;
 	private int seconds = 30;			//Player will be allowed 30 seconds per turn
 
@@ -40,9 +38,6 @@ public class GamePlayerTurn {
 		return saPanel;
 	}
 
-	public NetworkPanel getNPanel() {
-		return nPanel;
-	}
 
 	public void startTurnCountdown() {
 		seconds = 30;

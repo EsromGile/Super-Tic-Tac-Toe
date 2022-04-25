@@ -16,7 +16,6 @@ import model.StatePattern.GamePlayerX;
 
 public class TicTacToeCanvas extends JPanel {
     private StandAlonePanel saPanel;
-    private NetworkPanel nPanel;
     private ArrayList<GameElement> marks = new ArrayList<>();
     private int secondsLeft;
 
@@ -26,11 +25,7 @@ public class TicTacToeCanvas extends JPanel {
         setBackground(new Color(147, 204, 133));
     }
 
-    public TicTacToeCanvas(NetworkPanel nPanel) {
-        this.nPanel = nPanel;
-        setPreferredSize(new Dimension(600, 600));
-        setBackground(Color.black);
-    }
+    
 
     @Override
     protected void paintComponent(Graphics g) {

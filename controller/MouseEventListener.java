@@ -1,6 +1,5 @@
 package controller;
 
-import view.NetworkPanel;
 import view.StandAlonePanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
@@ -16,15 +15,11 @@ import model.StatePattern.GamePlayerX;
 public class MouseEventListener implements MouseListener, ActionListener {
 	
 	private StandAlonePanel saPanel;
-	private NetworkPanel nPanel;
 
 	public MouseEventListener(StandAlonePanel saPanel) {
 		this.saPanel = saPanel;
 	}
 
-	public MouseEventListener(NetworkPanel nPanel) {
-		this.nPanel = nPanel;
-	}
 
 	public void checkForWin() {
 		

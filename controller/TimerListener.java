@@ -2,7 +2,6 @@ package controller;
 
 import java.util.LinkedList;
 
-import view.NetworkPanel;
 import view.StandAlonePanel;
 
 import java.awt.event.ActionEvent;
@@ -15,7 +14,6 @@ enum  EventType{
 public class TimerListener implements ActionListener {
 	private LinkedList<EventType> eventQueue;
 	private StandAlonePanel saPanel;
-	private NetworkPanel nPanel;
 
 	public TimerListener(StandAlonePanel saPanel){
 		this.saPanel= saPanel;
