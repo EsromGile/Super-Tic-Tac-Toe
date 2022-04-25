@@ -1,23 +1,14 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-import javax.swing.plaf.metal.OceanTheme;
-
-// not the right import
-import org.w3c.dom.events.MouseEvent;
-
-import model.ObserverPattern.Observer;
 import model.StatePattern.GamePlayerX;
-import view.StandAlonePanel;
+import view.GamePanel;
 
-public class AI extends GamePlayer {
+public class AI {
 
 	private class Coordinate {
 		public int row;
@@ -27,12 +18,6 @@ public class AI extends GamePlayer {
 		public Coordinate() {
 			this.row = 0;
 			this.col = 0;
-			this.value = 0;
-		}
-
-		public Coordinate(int row, int col) {
-			this.row = row;
-			this.col = col;
 			this.value = 0;
 		}
 	}
@@ -53,26 +38,12 @@ public class AI extends GamePlayer {
 	}
 
 
-	private ArrayList<Observer> observers;
-	private StandAlonePanel saPanel;
-	private int seconds;
+	private GamePanel gamePanel;
 	private int x;
 	private int y;
 
-	public AI(StandAlonePanel saPanel){
-		this.saPanel = saPanel;
-	}
-
-	public void addGameLIstener(Observer o) {
-
-	}
-
-	public void removeGameLIstener(Observer o) {
-
-	}
-
-	public void notifyObservers(MouseEvent e) {
-
+	public AI(GamePanel gamePanel){
+		this.gamePanel = gamePanel;
 	}
 
 	public void takeTurn() {
@@ -86,39 +57,36 @@ public class AI extends GamePlayer {
 		// 	y = r.nextInt(5);
 		// }
 
-		// broken :(
-		Coordinate bestMove = new Coordinate();
-		bestMove = lookForWinConditions(saPanel.getTicTacToeGame().getGrid(), 2, 5, bestMove);
-		x = bestMove.row;
-		y = bestMove.col;
-
-		if((saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
-
-			ArrayList<GameElement> marks = saPanel.getCanvas().getMarks();
+		if((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
+			Coordinate bestMove = new Coordinate();
+			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 5, bestMove);
+			x = bestMove.row;
+			y = bestMove.col;
+				
+			ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
 
 			//Adds a 1.5 second delay before the AI places its mark
 			Timer timer1 = new Timer();
 			timer1.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(x, y).x + 5,
-										saPanel.getTicTacToeGame().getBoundingBox(x, y).y + 5, 
-										saPanel.getGamePlayerTurn().getState()));
-					if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-						saPanel.getTicTacToeGame().setEntry(x, y, 1);	//Set to X
+					marks.add(new GameElement(gamePanel.getTicTacToeGame().getBoundingBox(x, y).x + 5,
+										gamePanel.getTicTacToeGame().getBoundingBox(x, y).y + 5, 
+										gamePanel.getGamePlayerTurn().getState()));
+					if(gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+						gamePanel.getTicTacToeGame().setEntry(x, y, 1);	//Set to X
 					} else {
-						saPanel.getTicTacToeGame().setEntry(x, y, 2);	//Set to O
+						gamePanel.getTicTacToeGame().setEntry(x, y, 2);	//Set to O
 					}
+					gamePanel.getCanvas().repaint();
+					gamePanel.getTicTacToeGame().printGameBoard();
+
+					gamePanel.getTicTacToeGame().checkWin();
+					gamePanel.getTicTacToeGame().checkDraw();
 					timer1.cancel();
 					timer1.purge();
 				}
 			}, 1500);
-	
-			saPanel.getCanvas().repaint();
-			saPanel.getTicTacToeGame().printGameBoard();
-
-			saPanel.getTicTacToeGame().checkWin();
-			saPanel.getTicTacToeGame().checkDraw();
 			
 			//After the AI places mark, delay for 5 seconds, then go to next state
 			Timer timer2 = new Timer();
@@ -126,19 +94,15 @@ public class AI extends GamePlayer {
 			timer2.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					saPanel.getGamePlayerTurn().goNextState();
+					gamePanel.getGamePlayerTurn().goNextState();
 					System.out.print("Timer Ended");
 					timer2.cancel();
 					timer2.purge();
 				}
 			}, 5000L);
 
-			saPanel.getCanvas().repaint();
+			gamePanel.getCanvas().repaint();
 		}
-	}
-
-	public void render() {
-		
 	}
 
 	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight, Coordinate bestMove) {
@@ -150,7 +114,7 @@ public class AI extends GamePlayer {
 			move.row = r.nextInt(5);
 			move.col = r.nextInt(5);
 
-			while(!saPanel.getTicTacToeGame().spotTaken(move.row, move.col)){
+			while(!gamePanel.getTicTacToeGame().spotTaken(move.row, move.col)){
 				move.row = r.nextInt(5);
 				move.col = r.nextInt(5);
 			}

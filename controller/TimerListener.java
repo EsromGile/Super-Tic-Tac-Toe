@@ -2,7 +2,7 @@ package controller;
 
 import java.util.LinkedList;
 
-import view.StandAlonePanel;
+import view.GamePanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,10 +13,10 @@ enum  EventType{
 
 public class TimerListener implements ActionListener {
 	private LinkedList<EventType> eventQueue;
-	private StandAlonePanel saPanel;
+	private GamePanel gamePanel;
 
-	public TimerListener(StandAlonePanel saPanel){
-		this.saPanel= saPanel;
+	public TimerListener(GamePanel gamePanel){
+		this.gamePanel= gamePanel;
 		eventQueue = new LinkedList<>();
 	}
 

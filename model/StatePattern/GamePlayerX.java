@@ -3,7 +3,7 @@ package model.StatePattern;
 public class GamePlayerX implements GamePlayerState {
 
 	public GamePlayerX(GamePlayerTurn context) {
-		if(context.getSAPanel().getPlayerX())				//Start countdown if player is X
+		if(context.getGamePanel().getPlayerX())				//Start countdown if player is X
 			context.startTurnCountdown();
 	}
 

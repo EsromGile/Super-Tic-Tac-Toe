@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
-import model.GamePlayer;
 import model.Images.ImageStore;
 
 public class MenuPanel {
@@ -98,7 +97,7 @@ public class MenuPanel {
 
         standAloneButton.addActionListener(event->{
             window.getContentPane().removeAll();
-            var panel = new StandAlonePanel(window, playerOne.isSelected());
+            var panel = new GamePanel(window, playerOne.isSelected());
             panel.createStandAlonePanel();
             window.pack();
             window.setVisible(true);
@@ -106,7 +105,7 @@ public class MenuPanel {
 
         networkButton.addActionListener(event ->{
             window.getContentPane().removeAll();
-            var panel = new StandAlonePanel(window, playerOne.isSelected());
+            var panel = new GamePanel(window, playerOne.isSelected());
             panel.createStandAlonePanel();
             window.pack();
             window.setVisible(true);

@@ -1,28 +1,17 @@
 package controller;
 
-import view.StandAlonePanel;
+import view.GamePanel;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
-import model.GameElement;
-import model.StatePattern.GamePlayerO;
-import model.StatePattern.GamePlayerState;
-import model.StatePattern.GamePlayerX;
 
 public class MouseEventListener implements MouseListener, ActionListener {
 	
-	private StandAlonePanel saPanel;
+	private GamePanel saPanel;
 
-	public MouseEventListener(StandAlonePanel saPanel) {
+	public MouseEventListener(GamePanel saPanel) {
 		this.saPanel = saPanel;
-	}
-
-
-	public void checkForWin() {
-		
 	}
 
 	@Override
@@ -31,8 +20,7 @@ public class MouseEventListener implements MouseListener, ActionListener {
 		if(!saPanel.getGamePlayerTurn().getCanClick()) return;
 		if(saPanel.getManPlayer().takeTurn(e)) return;
 		//AI takes turn after player goes
-		saPanel.getAiPlayer().takeTurn();
-		
+		saPanel.getAiPlayer().takeTurn();	
 	}
 
 	@Override
@@ -49,6 +37,5 @@ public class MouseEventListener implements MouseListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) { }
-
 
 }

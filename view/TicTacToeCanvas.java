@@ -15,12 +15,12 @@ import model.StatePattern.GamePlayerO;
 import model.StatePattern.GamePlayerX;
 
 public class TicTacToeCanvas extends JPanel {
-    private StandAlonePanel saPanel;
+    private GamePanel gamePanel;
     private ArrayList<GameElement> marks = new ArrayList<>();
     private int secondsLeft;
 
-    public TicTacToeCanvas(StandAlonePanel saPanel) {
-        this.saPanel = saPanel;
+    public TicTacToeCanvas(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
         setPreferredSize(new Dimension(600, 600));
         setBackground(new Color(147, 204, 133));
     }
@@ -35,7 +35,7 @@ public class TicTacToeCanvas extends JPanel {
         //Turn Indicator
         g2.setColor(new Color(48, 99, 35));
         g2.setFont(new Font("Courier", Font.BOLD, 40));
-        if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)
+        if(gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)
             g2.drawString("X's Turn...", 170, 60);
         else
             g2.drawString("O's Turn...", 170, 60);
@@ -54,8 +54,8 @@ public class TicTacToeCanvas extends JPanel {
         }
 
         //Timer only displays when it is the player's turn
-        if((saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) ||
-           (!saPanel.getPlayerX() && saPanel.getGamePlayerTurn().getState() instanceof GamePlayerO)) {
+        if((gamePanel.getPlayerX() && gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) ||
+           (!gamePanel.getPlayerX() && gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerO)) {
 
             g2.setColor(new Color(48, 99, 35));
             g2.setFont(new Font("Courier", Font.BOLD, 30));

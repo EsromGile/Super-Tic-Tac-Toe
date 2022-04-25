@@ -3,55 +3,41 @@ import java.util.ArrayList;
 
 import java.awt.event.MouseEvent;
 
-import model.ObserverPattern.Observer;
 import model.StatePattern.GamePlayerX;
-import view.StandAlonePanel;
+import view.GamePanel;
 
-public class Player extends GamePlayer{
-	private ArrayList<Observer> observers;
-	private StandAlonePanel saPanel;
+public class Player {
+	private GamePanel gamePanel;
 
-	public Player(StandAlonePanel saPanel){
-		this.saPanel = saPanel;
-	}
-
-	public void addGameLIstener(Observer o) {
-
-	}
-
-	public void removeGameLIstener(Observer o) {
-
-	}
-
-	public void notifyObservers(MouseEvent e) {
-
+	public Player(GamePanel gamePanel){
+		this.gamePanel = gamePanel;
 	}
 
 	//Player takes turn
 	public boolean takeTurn(MouseEvent e) {
-		ArrayList<GameElement> marks = saPanel.getCanvas().getMarks();
-		if(!(saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)){
+		ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
+		if(!(gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)){
 			for(int row = 0; row < 5; row++) {
 				for(int column = 0; column < 5; column++) {
-					if(saPanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
-						if(!saPanel.getTicTacToeGame().spotTaken(row, column)) return true;
-						marks.add(new GameElement(saPanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
-												saPanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
-												saPanel.getGamePlayerTurn().getState()));
-						if(saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-							saPanel.getTicTacToeGame().setEntry(row, column, 1);	//Set to X
+					if(gamePanel.getTicTacToeGame().getBoundingBox(row, column).contains(e.getX(), e.getY())) {
+						if(!gamePanel.getTicTacToeGame().spotTaken(row, column)) return true;
+						marks.add(new GameElement(gamePanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
+												gamePanel.getTicTacToeGame().getBoundingBox(row, column).y + 5, 
+												gamePanel.getGamePlayerTurn().getState()));
+						if(gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+							gamePanel.getTicTacToeGame().setEntry(row, column, 1);	//Set to X
 						} else {
-							saPanel.getTicTacToeGame().setEntry(row, column, 2);	//Set to O
+							gamePanel.getTicTacToeGame().setEntry(row, column, 2);	//Set to O
 						}
 
-						saPanel.getCanvas().repaint();
-						saPanel.getTicTacToeGame().printGameBoard();					
+						gamePanel.getCanvas().repaint();
+						gamePanel.getTicTacToeGame().printGameBoard();					
 						
-						saPanel.getTicTacToeGame().checkWin();
-						saPanel.getTicTacToeGame().checkDraw();
+						gamePanel.getTicTacToeGame().checkWin();
+						gamePanel.getTicTacToeGame().checkDraw();
 						
 						//After the player places the mark, and the game is still in play, it goes to the next turn
-						saPanel.getGamePlayerTurn().goNextState();
+						gamePanel.getGamePlayerTurn().goNextState();
 			
 					}
 				}
@@ -59,9 +45,4 @@ public class Player extends GamePlayer{
 		}
 		return false;
 	}
-
-	public void render() {
-		
-	}
-
 }

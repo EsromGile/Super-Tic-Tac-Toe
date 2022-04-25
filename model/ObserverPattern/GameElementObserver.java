@@ -5,27 +5,31 @@
  */
 
 package model.ObserverPattern;
-
-import model.TicTacToe;
-import view.StandAlonePanel;
+import model.StatePattern.GamePlayerState;
+import model.StatePattern.GamePlayerX;
+import view.GamePanel;
 
 public class GameElementObserver implements Observer {
 
-	private StandAlonePanel saPanel;
+	private GamePanel gamePanel;
 
-	public GameElementObserver(StandAlonePanel panel) {
-		this.saPanel = panel;
+	public GameElementObserver(GamePanel panel) {
+		this.gamePanel = panel;
 	}
 
 	@Override
 	public void winCondition() {
-		System.out.println("Someone won");
-		System.exit(1);
+		GamePlayerState state = gamePanel.getGamePlayerTurn().getState();
+		
+		if (state instanceof GamePlayerX) {
+			System.out.println("X won for some reason");
+		} else {
+			System.out.println("O won");
+		}
 	}
 
 	@Override
 	public void drawCondition() {
 		System.out.println("Draw");
-		System.exit(0);
 	}
 }

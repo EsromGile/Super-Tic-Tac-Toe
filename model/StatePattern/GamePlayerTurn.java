@@ -3,18 +3,18 @@ package model.StatePattern;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import view.StandAlonePanel;
+import view.GamePanel;
 
 public class GamePlayerTurn {
 	private GamePlayerState state;
-	private StandAlonePanel saPanel;
+	private GamePanel gamePanel;
 	private boolean canClick;
 	private int seconds = 30;			//Player will be allowed 30 seconds per turn
 
-	public GamePlayerTurn(StandAlonePanel saPanel){ 
-		this.saPanel = saPanel;
+	public GamePlayerTurn(GamePanel gamePanel){ 
+		this.gamePanel = gamePanel;
 		state = new GamePlayerX(this);			//The X Player starts first
-		canClick = saPanel.getPlayerX();
+		canClick = gamePanel.getPlayerX();
 	}
 
 	public void goNextState() {
@@ -34,8 +34,8 @@ public class GamePlayerTurn {
 		return canClick;
 	}
 
-	public StandAlonePanel getSAPanel() {
-		return saPanel;
+	public GamePanel getGamePanel() {
+		return gamePanel;
 	}
 
 
@@ -52,14 +52,11 @@ public class GamePlayerTurn {
 					timer.cancel();
 					timer.purge();
 				}
-				saPanel.getCanvas().setSecondsLeft(seconds);
+				gamePanel.getCanvas().setSecondsLeft(seconds);
 				seconds--;
-				saPanel.getCanvas().repaint();
+				gamePanel.getCanvas().repaint();
 			}
 	
 		}, 0, 1000);
-
 	}
-
-
 }

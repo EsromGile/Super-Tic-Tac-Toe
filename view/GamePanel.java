@@ -17,7 +17,7 @@ import model.TicTacToe;
 import model.ObserverPattern.GameElementObserver;
 import model.StatePattern.GamePlayerTurn;
 
-public class StandAlonePanel {
+public class GamePanel {
 
     private JFrame window; 
     private TicTacToeCanvas canvas; 
@@ -28,7 +28,7 @@ public class StandAlonePanel {
     private AI aiPlayer = new AI(this);
     private Player manPlayer = new Player(this); 
 
-    public StandAlonePanel(JFrame window, boolean playerX){
+    public GamePanel(JFrame window, boolean playerX){
         this.window = window;
         window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
         this.playerX = playerX;
@@ -55,7 +55,7 @@ public class StandAlonePanel {
 
         //Start Game
         //I'm not exactly sure if this is how you're supposed to start the game but it made sense to me -Vivian
-        gamePlayer = new GamePlayer(); 
+        // gamePlayer = new GamePlayer(); 
         gamePlayerTurn = new GamePlayerTurn(this); 
         ticTacToeGame = new TicTacToe();      
         GameElementObserver observer = new GameElementObserver(this);

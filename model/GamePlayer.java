@@ -1,17 +1,7 @@
 package model;
 
-public class GamePlayer {
+public abstract class GamePlayer {
 	public boolean xPlayer;
 
-	public GamePlayer() {
-
-	}
-
-	public void takeTurn() {
-
-	}
-
-	public void render() {
-
-	}
+	public abstract void takeTurn();
 }
