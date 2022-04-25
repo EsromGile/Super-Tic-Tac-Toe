@@ -16,7 +16,7 @@ public class TicTacToe implements Subject{
 
 	public class TicTacToeSquare {
 		private Rectangle boundingBox; 		//boundingBox refers to the area on the canvas that the square covers
-		private int entry;					//entry refers to the mark (or lack of) that is in the square
+		int entry;					//entry refers to the mark (or lack of) that is in the square
 		/*
 			0 is empty
 			1 is X
