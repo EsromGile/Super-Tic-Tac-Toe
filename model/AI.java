@@ -8,6 +8,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.plaf.metal.OceanTheme;
+
 // not the right import
 import org.w3c.dom.events.MouseEvent;
 
@@ -21,11 +23,33 @@ public class AI extends GamePlayer {
 		public int row;
 		public int col;
 		public int value;
+
+		public Coordinate() {
+			this.row = 0;
+			this.col = 0;
+			this.value = 0;
+		}
+
+		public Coordinate(int row, int col) {
+			this.row = row;
+			this.col = col;
+			this.value = 0;
+		}
 	}
 
 	public class Weight {
-		public int ai = 0;
-		public int player = 0;
+		public int ai;
+		public int player;
+
+		public Weight() {
+			this.ai = 0;
+			this.player = 0;
+		}
+
+		public Weight(int ai, int player) {
+			this.ai = ai;
+			this.player = player;
+		}
 	}
 
 
@@ -52,22 +76,21 @@ public class AI extends GamePlayer {
 	}
 
 	public void takeTurn() {
-		// Sample "AI" Turn
-		Random r = new Random();
-		x = r.nextInt(5);
-		y = r.nextInt(5);
+		// // Sample "AI" Turn
+		// Random r = new Random();
+		// x = r.nextInt(5);
+		// y = r.nextInt(5);
 
-		while(!saPanel.getTicTacToeGame().spotTaken(x, y)){
-			x = r.nextInt(5);
-			y = r.nextInt(5);
-		}
+		// while(!saPanel.getTicTacToeGame().spotTaken(x, y)){
+		// 	x = r.nextInt(5);
+		// 	y = r.nextInt(5);
+		// }
 
-
-		// // broken :(
-		// Coordinate bestMove = new Coordinate();
-		// bestMove = lookForWinConditions(saPanel.getTicTacToeGame().getGrid(), 2, 5, bestMove);
-		// x = bestMove.row;
-		// y = bestMove.col;
+		// broken :(
+		Coordinate bestMove = new Coordinate();
+		bestMove = lookForWinConditions(saPanel.getTicTacToeGame().getGrid(), 2, 5, bestMove);
+		x = bestMove.row;
+		y = bestMove.col;
 
 		if((saPanel.getPlayerX() ^ saPanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
@@ -92,8 +115,6 @@ public class AI extends GamePlayer {
 			}, 1500);
 	
 			saPanel.getCanvas().repaint();
-	
-			//Add code here for checking for a win/draw
 			saPanel.getTicTacToeGame().printGameBoard();
 
 			saPanel.getTicTacToeGame().checkWin();
@@ -113,8 +134,6 @@ public class AI extends GamePlayer {
 			}, 5000L);
 
 			saPanel.getCanvas().repaint();
-			// saPanel.getGamePlayerTurn().goNextState();		// this seems to be broken 
-			
 		}
 	}
 
@@ -122,11 +141,21 @@ public class AI extends GamePlayer {
 		
 	}
 
-
 	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight, Coordinate bestMove) {
 		
 		// base case
-		if (weight < 0) 
+		if ((weight < 0) && (bestMove.value == 0)) {
+			Coordinate move = new Coordinate();
+			Random r = new Random();
+			move.row = r.nextInt(5);
+			move.col = r.nextInt(5);
+
+			while(!saPanel.getTicTacToeGame().spotTaken(move.row, move.col)){
+				move.row = r.nextInt(5);
+				move.col = r.nextInt(5);
+			}
+			return move;
+		} else if (weight < 0) 
 			return bestMove;
 
 		// intialize weights
