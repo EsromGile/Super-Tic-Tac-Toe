@@ -7,14 +7,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.Images.ImageStore;
@@ -24,6 +17,7 @@ public class MenuPanel {
     private JButton connectServer = new JButton("Create Server"); 
     private JButton connectPeer = new JButton("Connect Peer");
     private JTextField ipAddress = new JTextField(15);
+    private String IPAddress;
     
     public MenuPanel(JFrame window){
         this.window = window; 
@@ -109,12 +103,13 @@ public class MenuPanel {
         });
 
         networkButton.addActionListener(event ->{
-            window.getContentPane().removeAll();
-            var panel = new GamePanel(window, playerOne.isSelected());
-            panel.createStandAlonePanel();
-            window.pack();
-            window.setVisible(true);
+            IPAddress = JOptionPane.showInputDialog("Enter IP Address of Server:");
+            System.out.println(IPAddress);
         });
         
+    }
+
+    public String getIPAddress() {
+        return IPAddress;
     }
 }
