@@ -66,7 +66,7 @@ public class TicTacToeCanvas extends JPanel {
                 g2.drawString("Time Remaining: 0", 140, 550);
             }
         }
-        g2.setColor(Color.yellow);
+        g2.setColor(Color.black);
         g2.setFont(new Font("Courier New", Font.BOLD, 10));
         int l = 20; 
         int y = 0;

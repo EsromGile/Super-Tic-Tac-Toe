@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.MouseEventListener;
-import controller.TimerListener;
+import controller.EventListener;
 import model.AI;
 import model.GamePlayer;
 import model.Player;
@@ -60,7 +60,7 @@ public class GamePanel {
         ticTacToeGame = new TicTacToe();      
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);
-        TimerListener timerListener = new TimerListener(this);   
+        EventListener timerListener = new EventListener(this);   
 
         //action listener
         backButton.addActionListener(event->{
@@ -73,6 +73,7 @@ public class GamePanel {
         aiPlayer.takeTurn();
 
     }
+    
 
     public TicTacToeCanvas getCanvas() {
         return canvas;
