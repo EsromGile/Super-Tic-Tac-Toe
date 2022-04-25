@@ -14,12 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import model.Images.ImageStore;
 
 public class MenuPanel {
     private JFrame window; 
+    private JButton connectServer = new JButton("Create Server"); 
+    private JButton connectPeer = new JButton("Connect Peer");
+    private JTextField ipAddress = new JTextField(15);
+    
     public MenuPanel(JFrame window){
         this.window = window; 
     }

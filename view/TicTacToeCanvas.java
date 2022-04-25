@@ -18,14 +18,13 @@ public class TicTacToeCanvas extends JPanel {
     private GamePanel gamePanel;
     private ArrayList<GameElement> marks = new ArrayList<>();
     private int secondsLeft;
+    private ArrayList<String> textArray = new ArrayList<>(); 
 
     public TicTacToeCanvas(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         setPreferredSize(new Dimension(600, 600));
         setBackground(new Color(147, 204, 133));
     }
-
-    
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -67,9 +66,20 @@ public class TicTacToeCanvas extends JPanel {
                 g2.drawString("Time Remaining: 0", 140, 550);
             }
         }
+        g2.setColor(Color.yellow);
+        g2.setFont(new Font("Courier New", Font.BOLD, 10));
+        int l = 20; 
+        int y = 0;
+        for (String t:textArray){
+            y += 20; 
+            g2.drawString(t, 15, y);
+        }
 
     }
-
+    public ArrayList<String> getTextArray() {
+        return textArray;
+    }
+    
     public ArrayList<GameElement> getMarks() {
         return marks;
     }
@@ -77,5 +87,6 @@ public class TicTacToeCanvas extends JPanel {
     public void setSecondsLeft(int secondsLeft) {
         this.secondsLeft = secondsLeft;
     }
+    
 
 }
