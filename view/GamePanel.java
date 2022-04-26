@@ -74,6 +74,39 @@ public class GamePanel {
 
     }
     
+    public void createNetworkPanel(){
+        Container cp = window.getContentPane();
+        cp.setPreferredSize(new Dimension(600,650));
+        
+        //main tic-tac-toe panel
+        JPanel mainPanel = new JPanel();
+        canvas = new TicTacToeCanvas(this);
+        mainPanel.add(canvas);
+
+        //south panel 
+        JPanel southPanel = new JPanel();
+        JButton backButton = new JButton("Back"); 
+        southPanel.add(backButton);
+ 
+        cp.add(BorderLayout.CENTER, mainPanel);
+        cp.add(BorderLayout.SOUTH, southPanel);
+
+        //Start Game
+        gamePlayerTurn = new GamePlayerTurn(this); 
+        ticTacToeGame = new TicTacToe();      
+        GameElementObserver observer = new GameElementObserver(this);
+        ticTacToeGame.subscribe(observer);
+
+        backButton.addActionListener(event->{
+            window.getContentPane().removeAll();
+            var panel = new MenuPanel(window);
+            panel.init();
+            window.pack();
+            window.setVisible(true);
+        });
+
+        aiPlayer.takeTurn();
+    }
 
     public TicTacToeCanvas getCanvas() {
         return canvas;

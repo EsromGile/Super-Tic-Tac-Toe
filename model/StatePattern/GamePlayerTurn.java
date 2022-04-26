@@ -10,16 +10,23 @@ public class GamePlayerTurn {
 	private GamePanel gamePanel;
 	private boolean canClick;
 	private int seconds = 30;			//Player will be allowed 30 seconds per turn
+	Timer timer = new Timer();
+	TimerTask task;
 
 	public GamePlayerTurn(GamePanel gamePanel){ 
 		this.gamePanel = gamePanel;
 		state = new GamePlayerX(this);			//The X Player starts first
 		canClick = gamePanel.getPlayerX();
+		timer = new Timer();
 	}
 
 	public void goNextState() {
 		state.goNext(this);
 		canClick = !canClick;
+		if(!canClick){
+			timer.cancel();
+			task.cancel();
+		}
 	}
 
 	public void setState(GamePlayerState state) {
@@ -41,13 +48,11 @@ public class GamePlayerTurn {
 
 	public void startTurnCountdown() {
 		seconds = 30;
-
-		Timer timer = new Timer();
-
-		timer.schedule(new TimerTask() {
-
+		timer = new Timer();
+		task = new TimerTask() {
 			@Override
 			public void run() {
+				
 				if(seconds <= 0) {
 					timer.cancel();
 					timer.purge();
@@ -56,7 +61,8 @@ public class GamePlayerTurn {
 				seconds--;
 				gamePanel.getCanvas().repaint();
 			}
-	
-		}, 0, 1000);
+		};
+		timer.schedule(task, 0, 1000);
+
 	}
 }
