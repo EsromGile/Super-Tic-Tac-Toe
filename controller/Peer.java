@@ -12,62 +12,78 @@ import view.GamePanel;
 
 public class Peer {
 	private Socket socket;
-    // private BufferedReader bufferedReader;
-    // private BufferedWriter bufferedWriter;
     private String username;
     private OutputStream os;
     private ObjectOutputStream oos;
     private GamePanel panel;
-    private InputStream is;
-    private ArrayList<GameElement> shapes;
-    // private ObjectInputStream ois;
+    // private InputStream is;
+    private static InputStream is;
+    private static ObjectInputStream ois;
+    //private ArrayList<GameElement> marks;
+    //private GameElement playerPiece;
+    
 
     public Peer(Socket socket, String username, GamePanel panel) throws Exception {
+        // System.out.println("peer step 1");
         this.socket = socket;
+        // System.out.println("peer step 2");
         this.username = username;
-        os = socket.getOutputStream();
-        oos = new ObjectOutputStream(os);
+        // System.out.println("peer step 3");
         this.panel = panel;
-        is = socket.getInputStream();
-        
-        // this.bufferedReader = new BufferedReader(new
-        // InputStreamReader(socket.getInputStream()));
-        // this.bufferedWriter= new BufferedWriter(new
-        // OutputStreamWriter(socket.getOutputStream()));
+        // System.out.println("peer step 4");
+        os = socket.getOutputStream();
+        // System.out.println("peer step 5");
+        oos = new ObjectOutputStream(os);
+        // System.out.println("peer step 6");
+        ois = panel.getOis();
+        if(ois == null) System.out.println("NULLLL");
+        System.out.println("peer obj created");
     }
 
-    public void sendMessage() throws Exception {
+    public void sendCoordinates(GameElement piece, int x, int y) throws Exception {
+        // new Thread(new Runnable() {
 
-        // bufferedWriter.write(username);
-        // bufferedWriter.newLine();
-        // bufferedWriter.flush();
-        // Scanner scanner = new Scanner(System.in);
-        while (socket.isConnected()) {
+        // @Override
+        // public void run() {
+        // try {
+        // System.out.println("send coord");&& panel.isMouseClick() == true
+        while (socket.isConnected() ) {
+            System.out.println("mouseclick: " + panel.isMouseClick());
+            // oos.writeObject(piece);
+            oos.writeObject(x);
+            oos.writeObject(y);
+            oos.flush();
             oos.reset();
-            oos.writeObject(panel.getCanvas().getMarks());
-            // String messageToSend = scanner.nextLine();
-            // bufferedWriter.write(username + ": " + messageToSend);
-            // bufferedWriter.newLine();
-            // bufferedWriter.flush();
+            //panel.setMouseClick(false);
         }
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
+        // }).start();
     }
-
-    public void listenForMessage(){
+    public void getCoordinates() throws Exception {
+        System.out.println("get coord");
         new Thread(new Runnable() {
+            ObjectInputStream ois = panel.getOis();
+
             @Override
             public void run() {
                 try {
-                    ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-                    
-                    //String msgFromGroupChat; 
-                    while(socket.isConnected()){
-                    shapes = (ArrayList) ois.readObject();
-                    panel.getCanvas().repaint();
-                    // msgFromGroupChat = bufferedReader.readLine();
-                    //    System.out.println(msgFromGroupChat);
-                    }} catch (Exception e) {
-                        e.printStackTrace();
+                    if (panel.getOis() == null) {
+                        System.out.println("null ois");
                     }
+                    while (socket.isConnected()) {
+                        // IShapeDraw shape = (IShapeDraw) ois.readObject();
+                        int x = (Integer) ois.readObject();
+                        int y = (Integer) ois.readObject();
+                        
+
+                        System.out.println("x:" + x + " y: " + y);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -83,5 +99,17 @@ public class Peer {
         }
     }
 
+    public ObjectOutputStream getOos() {
+        return oos;
+    }
+    public static ObjectInputStream getOis() {
+        return ois;
+    }
+    public static void setOis(ObjectInputStream ois) {
+        Peer.ois = ois;
+    }
+    public void setOos(ObjectOutputStream oos) {
+        this.oos = oos;
+    }
 
 }

@@ -3,6 +3,8 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,6 +29,9 @@ public class GamePanel {
     private boolean playerX;
     private AI aiPlayer = new AI(this);
     private Player manPlayer = new Player(this); 
+    private ObjectOutputStream oos; 
+    private ObjectInputStream ois; 
+    private boolean mouseClick = false;
 
     public GamePanel(JFrame window, boolean playerX){
         this.window = window;
@@ -134,5 +139,25 @@ public class GamePanel {
 
     public Player getManPlayer() {
         return manPlayer;
+    }
+    public void setOos(ObjectOutputStream oos){
+        System.out.println("oos set");
+        this.oos = oos; 
+    }
+    public ObjectOutputStream getOos() {
+        return oos;
+    }
+    public void setOis(ObjectInputStream ois) {
+        System.out.println("set ois method");
+        this.ois = ois;
+    }
+    public ObjectInputStream getOis() {
+        return ois;
+    }
+    public void setMouseClick(boolean mouseClick) {
+        this.mouseClick = mouseClick;
+    }
+    public boolean isMouseClick() {
+        return mouseClick;
     }
 }

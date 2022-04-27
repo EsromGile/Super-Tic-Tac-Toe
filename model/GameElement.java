@@ -2,13 +2,14 @@ package model;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import model.Images.ImageStore;
 import model.StatePattern.GamePlayerState;
 import model.StatePattern.GamePlayerX;
 
 //This class is mainly used to render the X's and O's
-public class GameElement {
+public class GameElement implements Serializable{
     private int x;
     private int y;
     private BufferedImage image;

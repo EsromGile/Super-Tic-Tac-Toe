@@ -23,10 +23,14 @@ public class EventListener implements ActionListener {
 	private LinkedList<EventType> eventQueue;
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
+	
 	private OutputStream os;
 	private ObjectOutputStream oos;
+	private int x = 0 ; 
+	private int y = 0 ; 
 	private Peer peer;
 	private String name = "";
+	private Socket socket = null; 
 
 	public EventListener(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
@@ -53,10 +57,11 @@ public class EventListener implements ActionListener {
 				JFrame window = menuPanel.getWindow();
 				window.getContentPane().removeAll();
 				var panel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
-				panel.createStandAlonePanel(); // needs to be changed to createNetworkPanel
+				panel.createNetworkPanel(); // needs to be changed to createNetworkPanel
 				window.pack();
 				window.setVisible(true);
 				//run server 
+				menuPanel.setNetwork(true);
 				Server.main(null, panel);
 				//also create peer
 				peerConnect(panel);
@@ -67,7 +72,7 @@ public class EventListener implements ActionListener {
 			JFrame window = menuPanel.getWindow();
 			window.getContentPane().removeAll();
 			var panel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
-			panel.createStandAlonePanel(); // needs to be changed to createNetworkPanel
+			panel.createNetworkPanel(); // needs to be changed to createNetworkPanel
 			window.pack();
 			window.setVisible(true);
 			peerConnect(panel);
@@ -89,23 +94,52 @@ public class EventListener implements ActionListener {
 	public String getName() {
 		return name;
 	}
-	public void peerConnect(GamePanel panel){
+	public void peerConnect(GamePanel panel){ // calls process to connect peer to server
 		try {
 				String ipAddress = menuPanel.getIpAddress().getText();
 				if (panel.getPlayerX()) {
-					name = ")(";
+					name = "X";
 				} else {
-					name = "()";
+					name = "O";
 				}
+				String test = "player : "+ name;
 				Socket socket = new Socket();
 				SocketAddress sa = new InetSocketAddress(ipAddress, 4216);
 				socket.connect(sa);
 				peer = new Peer(socket, name, panel);
+				
+				// System.out.println("1. "+test);
 				menuPanel.getConnectPeer().setEnabled(false);
-				os = socket.getOutputStream();
-				oos = new ObjectOutputStream(os);
+				// System.out.println("2. "+test);
+				oos = peer.getOos();
+				System.out.println("1. "+test);
+				gamePanel.setOos(oos);
+				System.out.println("2. "+test);
+				System.out.println(test);
+				if(oos == null) System.out.println("null " + test);
+				else System.out.println("not null " + test);
+				oos.writeObject(test);
+				oos.flush();
+				gamePanel.getCanvas().repaint();
+                menuPanel.getConnectPeer().setEnabled(false);
+                menuPanel.setPeerConnected(true);
+
 		}catch(Exception e){
-			
 		}
 	}
+	public Socket getSocket() {
+		return socket;
+	}
+	private void sendXY(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    private int getX() {
+        return x;
+    }
+
+    private int getY() {
+        return y;
+    }
 }

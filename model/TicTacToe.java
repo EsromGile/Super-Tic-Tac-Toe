@@ -1,13 +1,14 @@
 package model;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.ObserverPattern.Observer;
 import model.ObserverPattern.Subject;
 
 
-public class TicTacToe implements Subject{
+public class TicTacToe implements Subject, Serializable{
 
 	public enum Event {
 		WinDetected, DrawDetected

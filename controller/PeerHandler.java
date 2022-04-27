@@ -11,24 +11,22 @@ import view.GamePanel;
 public class PeerHandler implements Runnable {
     public static ArrayList<PeerHandler> peerHandlers = new ArrayList<>(); 
     private Socket socket; 
-    //private BufferedReader bufferedReader;
-    //private BufferedWriter bufferedWriter; 
     private String peerUsername; 
     private GamePanel panel; 
-    private ArrayList<GameElement> marks ;
+    //private ArrayList<GameElement> marks ;
     private InputStream is; 
     private ObjectInputStream ois;
 
     public PeerHandler(Socket socket, GamePanel panel, String peerName) throws Exception{
         this.socket = socket; 
-        //this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        //this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         this.panel = panel ;
         this.peerUsername = peerName;//pulling wrong user
         peerHandlers.add(this);
         panel.getCanvas().getTextArray().add("SERVER: " + peerUsername + " has entered the chat!");
-        is = socket.getInputStream();
-        ois = new ObjectInputStream(is);
+        // is = panel.getOis(); 
+        ois = panel.getOis();
+        //is = socket.getInputStream();
+        //ois = new ObjectInputStream(is);
     }
     @Override
     public void run() {
@@ -37,10 +35,10 @@ public class PeerHandler implements Runnable {
         
         while(!socket.isConnected()){
             try {
-                marks =(ArrayList) ois.readObject();
+                //marks =(ArrayList) ois.readObject();
                 
                 // messageFromClient = bufferedReader.readLine();
-                broadcastMessage();
+                //broadcastMessage();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -51,6 +49,7 @@ public class PeerHandler implements Runnable {
     public void broadcastMessage() throws Exception{
         for(PeerHandler peerHandler:peerHandlers){
             if(!peerHandler.peerUsername.equals(peerUsername)){
+                panel.getCanvas().getMarks();
                 panel.getCanvas().repaint();
                 //peerHandler.
                 // peerHandler.bufferedWriter.write(messageToSend);
@@ -74,7 +73,7 @@ public class PeerHandler implements Runnable {
             e.printStackTrace();
         }
     }
-    public ArrayList<GameElement> getMarks() {
-        return marks;
-    }
+    // public ArrayList<GameElement> getMarks() {
+    //     return marks;
+    // }
 }

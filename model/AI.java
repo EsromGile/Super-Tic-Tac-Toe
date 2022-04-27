@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -8,7 +9,7 @@ import java.util.TimerTask;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 
-public class AI {
+public class AI implements Serializable{
 
 	private class Coordinate {
 		public int row;

@@ -7,6 +7,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,8 +25,9 @@ public class MenuPanel {
     private JButton networkButton = new JButton("Network");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
-    //private String IPAddress;
-
+    private boolean network = false; 
+    private boolean isPeerConnected = false; 
+    
     public MenuPanel(JFrame window) {
         this.window = window;
     }
@@ -165,4 +168,18 @@ public class MenuPanel {
    public JRadioButton getPlayerTwo() {
        return playerTwo;
    }
+   public boolean isNetwork() {
+    return network;
+}
+public void setNetwork(boolean network) {
+    this.network = network;
+}
+public boolean isPeerConnected() {
+    return isPeerConnected;
+}
+public void setPeerConnected(boolean isPeerConnected) {
+    this.isPeerConnected = isPeerConnected;
+}
+
+
 }
