@@ -25,9 +25,9 @@ public class MenuPanel {
     private JButton networkButton = new JButton("Network");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
-    private boolean network = false; 
-    private boolean isPeerConnected = false; 
-    
+    // private boolean network = false;
+    private boolean isPeerConnected = false;
+
     public MenuPanel(JFrame window) {
         this.window = window;
     }
@@ -50,7 +50,7 @@ public class MenuPanel {
         menuPanel.setLayout(layout);
         GridBagConstraints gbc = new GridBagConstraints();
         menuPanel.setPreferredSize(new Dimension(400, 200));
-        //north section
+        // north section
         JLabel ticTac = new JLabel("Super Tic-Tac-Toe");
         ticTac.setFont(new Font("Courier New", Font.BOLD, 30));
         northPanel.add(ticTac);
@@ -60,16 +60,16 @@ public class MenuPanel {
         JLabel sLabel = new JLabel("Select Mode to Start: ");
         menuPanel.add(sLabel, gbc);
 
-        //middle section
+        // middle section
         gbc.gridx = 1;
         gbc.gridy = 1;
-        
+
         menuPanel.add(standAloneButton, gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         menuPanel.add(networkButton, gbc);
 
-        //bottom section
+        // bottom section
         GridBagLayout networkLayout = new GridBagLayout();
         networkPanel.setLayout(networkLayout);
         GridBagConstraints ngbc = new GridBagConstraints();
@@ -132,54 +132,59 @@ public class MenuPanel {
         standAloneButton.addActionListener(listener);
 
         // standAloneButton.addActionListener(event -> {
-        //     window.getContentPane().removeAll();
-        //     var panel = new GamePanel(window, playerOne.isSelected());
-        //     panel.createStandAlonePanel();
-        //     window.pack();
-        //     window.setVisible(true);
+        // window.getContentPane().removeAll();
+        // var panel = new GamePanel(window, playerOne.isSelected());
+        // panel.createStandAlonePanel();
+        // window.pack();
+        // window.setVisible(true);
         // });
 
         // networkButton.addActionListener(event -> {
-            
+
         // });
 
     }
+
     public JButton getConnectPeer() {
         return connectPeer;
     }
+
     public JButton getConnectServer() {
         return connectServer;
     }
+
     public JTextField getIpAddress() {
         return ipAddress;
     }
+
     public JButton getNetworkButton() {
         return networkButton;
     }
+
     public JButton getStandAloneButton() {
         return standAloneButton;
     }
+
     public JFrame getWindow() {
         return window;
     }
-   public JRadioButton getPlayerOne() {
-       return playerOne;
-   }
-   public JRadioButton getPlayerTwo() {
-       return playerTwo;
-   }
-   public boolean isNetwork() {
-    return network;
-}
-public void setNetwork(boolean network) {
-    this.network = network;
-}
-public boolean isPeerConnected() {
-    return isPeerConnected;
-}
-public void setPeerConnected(boolean isPeerConnected) {
-    this.isPeerConnected = isPeerConnected;
-}
 
+    public JRadioButton getPlayerOne() {
+        return playerOne;
+    }
+
+    public JRadioButton getPlayerTwo() {
+        return playerTwo;
+    }
+
+   
+
+    public boolean isPeerConnected() {
+        return isPeerConnected;
+    }
+
+    public void setPeerConnected(boolean isPeerConnected) {
+        this.isPeerConnected = isPeerConnected;
+    }
 
 }

@@ -52,8 +52,8 @@ public class Peer {
             // oos.writeObject(piece);
             oos.writeObject(x);
             oos.writeObject(y);
-            oos.flush();
             oos.reset();
+            oos.flush();
             //panel.setMouseClick(false);
         }
         // } catch (IOException e) {

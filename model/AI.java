@@ -98,6 +98,11 @@ public class AI implements Serializable{
 
 			gamePanel.getCanvas().repaint();
 		}
+		if(gamePanel.isNetwork()){
+			//do stuff
+		}
+
+
 	}
 
 	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight, Coordinate bestMove) {

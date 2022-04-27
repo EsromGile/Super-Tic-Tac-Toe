@@ -61,7 +61,7 @@ public class EventListener implements ActionListener {
 				window.pack();
 				window.setVisible(true);
 				//run server 
-				menuPanel.setNetwork(true);
+				//gamePanel.setNetwork(true);
 				Server.main(null, gamePanel);
 				//also create peer
 				peerConnect(gamePanel);

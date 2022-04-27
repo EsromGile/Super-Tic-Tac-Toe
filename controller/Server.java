@@ -56,16 +56,14 @@ public class Server extends Thread {
 
    
     public void addPeerHandler(Socket socket,GamePanel panel) throws Exception {
+        try{
         // System.out.println("socket step 2");    
         String name = "";
         // System.out.println("test 1");
-        
         if(panel.getOis() == null){
             System.out.println("null ois");
         }
         // System.out.println("test 2");
-        
-        
         if ((name = (String) ois.readObject()) != null) {
             // System.out.println("test oos: " + name);
             // System.out.println("peer handler step 1");
@@ -78,6 +76,8 @@ public class Server extends Thread {
             thread.start();
         } else {
             System.out.println("does not works!");
+        }}catch(Exception e){
+            System.out.println(e);
         }
         // System.out.println("test 4");
     }

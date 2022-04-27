@@ -32,6 +32,7 @@ public class GamePanel {
     private ObjectOutputStream oos; 
     private ObjectInputStream ois; 
     private boolean mouseClick = false;
+    private boolean network = false; 
 
     public GamePanel(JFrame window, boolean playerX){
         this.window = window;
@@ -109,8 +110,12 @@ public class GamePanel {
             window.pack();
             window.setVisible(true);
         });
+        network = true; 
 
         aiPlayer.takeTurn();
+    }
+    public boolean isNetwork() {
+        return network;
     }
 
     public TicTacToeCanvas getCanvas() {
