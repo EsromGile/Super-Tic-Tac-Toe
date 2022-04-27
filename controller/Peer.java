@@ -77,8 +77,6 @@ public class Peer {
                         // IShapeDraw shape = (IShapeDraw) ois.readObject();
                         int x = (Integer) ois.readObject();
                         int y = (Integer) ois.readObject();
-                        
-
                         System.out.println("x:" + x + " y: " + y);
                     }
                 } catch (Exception e) {

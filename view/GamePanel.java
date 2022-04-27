@@ -141,14 +141,14 @@ public class GamePanel {
         return manPlayer;
     }
     public void setOos(ObjectOutputStream oos){
-        System.out.println("oos set");
+        // System.out.println("oos set");
         this.oos = oos; 
     }
     public ObjectOutputStream getOos() {
         return oos;
     }
     public void setOis(ObjectInputStream ois) {
-        System.out.println("set ois method");
+        // System.out.println("set ois method");
         this.ois = ois;
     }
     public ObjectInputStream getOis() {

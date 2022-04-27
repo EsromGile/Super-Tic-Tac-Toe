@@ -56,30 +56,30 @@ public class Server extends Thread {
 
    
     public void addPeerHandler(Socket socket,GamePanel panel) throws Exception {
-        System.out.println("socket step 2");    
+        // System.out.println("socket step 2");    
         String name = "";
-        System.out.println("test 1");
+        // System.out.println("test 1");
         
         if(panel.getOis() == null){
             System.out.println("null ois");
         }
-        System.out.println("test 2");
+        // System.out.println("test 2");
         
         
         if ((name = (String) ois.readObject()) != null) {
-            System.out.println("test oos: " + name);
+            // System.out.println("test oos: " + name);
             // System.out.println("peer handler step 1");
             PeerHandler peerHandler;
             // System.out.println("peer handler step 2");
             peerHandler = new PeerHandler(socket, panel, name);
             // System.out.println("peer handler step 3");
             Thread thread = new Thread(peerHandler);
-            System.out.println("peer handler added:");
+            System.out.println("peer handler added:" + name);
             thread.start();
         } else {
             System.out.println("does not works!");
         }
-        System.out.println("test 4");
+        // System.out.println("test 4");
     }
 
     

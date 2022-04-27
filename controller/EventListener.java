@@ -56,26 +56,27 @@ public class EventListener implements ActionListener {
 				//create GamePanel
 				JFrame window = menuPanel.getWindow();
 				window.getContentPane().removeAll();
-				var panel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
-				panel.createNetworkPanel(); // needs to be changed to createNetworkPanel
+				gamePanel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
+				gamePanel.createNetworkPanel(); // needs to be changed to createNetworkPanel
 				window.pack();
 				window.setVisible(true);
 				//run server 
 				menuPanel.setNetwork(true);
-				Server.main(null, panel);
+				Server.main(null, gamePanel);
 				//also create peer
-				peerConnect(panel);
+				peerConnect(gamePanel);
 
 			} catch (Exception e2) {
+				System.out.println(e2);
 			}
 		} else if (e.getSource() == menuPanel.getConnectPeer()) {
 			JFrame window = menuPanel.getWindow();
 			window.getContentPane().removeAll();
-			var panel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
-			panel.createNetworkPanel(); // needs to be changed to createNetworkPanel
+			gamePanel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
+			gamePanel.createNetworkPanel(); // needs to be changed to createNetworkPanel
 			window.pack();
 			window.setVisible(true);
-			peerConnect(panel);
+			peerConnect(gamePanel);
 		}
 	}
 
@@ -112,19 +113,21 @@ public class EventListener implements ActionListener {
 				menuPanel.getConnectPeer().setEnabled(false);
 				// System.out.println("2. "+test);
 				oos = peer.getOos();
-				System.out.println("1. "+test);
+				// System.out.println("1. "+test);
 				gamePanel.setOos(oos);
-				System.out.println("2. "+test);
+				// System.out.println("2. "+test);
 				System.out.println(test);
-				if(oos == null) System.out.println("null " + test);
-				else System.out.println("not null " + test);
+				// if(oos == null) System.out.println("null " + test);
+				// else System.out.println("not null " + test);
 				oos.writeObject(test);
+				oos.reset();
 				oos.flush();
 				gamePanel.getCanvas().repaint();
                 menuPanel.getConnectPeer().setEnabled(false);
                 menuPanel.setPeerConnected(true);
 
 		}catch(Exception e){
+			System.out.println(e);
 		}
 	}
 	public Socket getSocket() {
