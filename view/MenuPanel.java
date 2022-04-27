@@ -18,11 +18,11 @@ import model.Images.ImageStore;
 
 public class MenuPanel {
     private JFrame window;
-    private JButton connectServer = new JButton("Create Server");
-    private JButton connectPeer = new JButton("Connect Peer");
+    private JButton connectNetwork = new JButton("Create Network");
+    private JButton connectPeer = new JButton("Connect As Peer");
     private JTextField ipAddress = new JTextField(15);
     private JButton standAloneButton = new JButton("Stand Alone");
-    private JButton networkButton = new JButton("Network");
+    //private JButton networkButton = new JButton("Network");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
     // private boolean network = false;
@@ -65,9 +65,9 @@ public class MenuPanel {
         gbc.gridy = 1;
 
         menuPanel.add(standAloneButton, gbc);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        menuPanel.add(networkButton, gbc);
+        // gbc.gridx = 1;
+        // gbc.gridy = 2;
+        // menuPanel.add(networkButton, gbc);
 
         // bottom section
         GridBagLayout networkLayout = new GridBagLayout();
@@ -81,7 +81,7 @@ public class MenuPanel {
         networkPanel.add(player, ngbc);
         ngbc.gridx = 0;
         ngbc.gridy = 1;
-        networkPanel.add(connectServer, ngbc);
+        networkPanel.add(connectNetwork, ngbc);
         ngbc.gridx = 1;
         ngbc.gridy = 0;
         networkPanel.add(ipAddress, ngbc);
@@ -126,9 +126,9 @@ public class MenuPanel {
         cp.add(BorderLayout.SOUTH, southPanel);
 
         EventListener listener = new EventListener(this);
-        networkButton.addActionListener(listener);
+        //networkButton.addActionListener(listener);
         connectPeer.addActionListener(listener);
-        connectServer.addActionListener(listener);
+        connectNetwork.addActionListener(listener);
         standAloneButton.addActionListener(listener);
 
         // standAloneButton.addActionListener(event -> {
@@ -150,16 +150,14 @@ public class MenuPanel {
     }
 
     public JButton getConnectServer() {
-        return connectServer;
+        return connectNetwork;
     }
 
     public JTextField getIpAddress() {
         return ipAddress;
     }
 
-    public JButton getNetworkButton() {
-        return networkButton;
-    }
+    
 
     public JButton getStandAloneButton() {
         return standAloneButton;

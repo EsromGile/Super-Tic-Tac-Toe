@@ -1,11 +1,15 @@
 package model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import controller.Peer;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 
@@ -44,12 +48,17 @@ public class AI implements Serializable{
 	private GamePanel gamePanel;
 	private int x;
 	private int y;
+	private ObjectOutputStream oos; 
+	private ObjectInputStream ois; 
+	private Peer peer; 
 
 	public AI(GamePanel gamePanel){
 		this.gamePanel = gamePanel;
+		oos = gamePanel.getOos();
+		ois = gamePanel.getOis();
 	}
 
-	public void takeTurn() {
+	public void takeTurn() throws Exception {
 
 		if((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
@@ -57,6 +66,15 @@ public class AI implements Serializable{
 			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 4, bestMove);
 			x = bestMove.row;
 			y = bestMove.col;
+			
+			if(gamePanel.isNetwork()){
+				//do stuff
+				
+				// oos.writeObject(x);
+				// oos.writeObject(y);
+				// oos.flush();
+				// oos.reset();
+			}
 				
 			ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
 
@@ -98,11 +116,7 @@ public class AI implements Serializable{
 
 			gamePanel.getCanvas().repaint();
 		}
-		if(gamePanel.isNetwork()){
-			//do stuff
-		}
-
-
+	
 	}
 
 	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight, Coordinate bestMove) {
@@ -315,4 +329,8 @@ public class AI implements Serializable{
 		}
 		return line;
 	}
+	public void setPeer(Peer peer) {
+		this.peer = peer;
+	}
+	
 }

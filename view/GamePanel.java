@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.MouseEventListener;
+import controller.Peer;
 import controller.EventListener;
 import model.AI;
 import model.GamePlayer;
@@ -33,17 +34,22 @@ public class GamePanel {
     private ObjectInputStream ois; 
     private boolean mouseClick = false;
     private boolean network = false; 
+    private Peer peer; 
 
     public GamePanel(JFrame window, boolean playerX){
         this.window = window;
-        window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
         this.playerX = playerX;
     }
+    // public GamePanel(JFrame window, boolean playerX,Peer peer){
+    //     this.window = window;
+    //     this.playerX = playerX;
+    //     this.peer = peer; 
+    // }
 
-    public void createStandAlonePanel(){
+    public void createStandAlonePanel() throws Exception{
         Container cp = window.getContentPane();
         cp.setPreferredSize(new Dimension(600,650));
-        
+        window.setTitle("Super-Tic-Tac-Toe (Man vs. AI)");
         //main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
         canvas = new TicTacToeCanvas(this);
@@ -67,6 +73,7 @@ public class GamePanel {
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);
         EventListener timerListener = new EventListener(this);   
+        network = false;
 
         //action listener
         backButton.addActionListener(event->{
@@ -80,9 +87,12 @@ public class GamePanel {
 
     }
     
-    public void createNetworkPanel(){
+    public void createNetworkPanel() throws Exception{
         Container cp = window.getContentPane();
         cp.setPreferredSize(new Dimension(600,650));
+        window.setTitle("Super-Tic-Tac-Toe (AI vs. AI)");
+        playerX = !playerX; 
+        aiPlayer.setPeer(peer);
         
         //main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
@@ -164,5 +174,8 @@ public class GamePanel {
     }
     public boolean isMouseClick() {
         return mouseClick;
+    }
+    public void setPeer(Peer peer) {
+        this.peer = peer;
     }
 }
