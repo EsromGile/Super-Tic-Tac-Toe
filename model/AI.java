@@ -14,11 +14,13 @@ public class AI {
 		public int row;
 		public int col;
 		public int value;
+		public int multiplicity;
 
 		public Coordinate() {
-			this.row = 0;
-			this.col = 0;
+			this.row = -1;
+			this.col = -1;
 			this.value = 0;
+			this.multiplicity = 1;
 		}
 	}
 
@@ -47,19 +49,11 @@ public class AI {
 	}
 
 	public void takeTurn() {
-		// // Sample "AI" Turn
-		// Random r = new Random();
-		// x = r.nextInt(5);
-		// y = r.nextInt(5);
-
-		// while(!saPanel.getTicTacToeGame().spotTaken(x, y)){
-		// 	x = r.nextInt(5);
-		// 	y = r.nextInt(5);
-		// }
 
 		if((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
+
 			Coordinate bestMove = new Coordinate();
-			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 5, bestMove);
+			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 4, bestMove);
 			x = bestMove.row;
 			y = bestMove.col;
 				
@@ -169,19 +163,40 @@ public class AI {
 			moves.add(getConditionLocation(grid, -1, "rightDiag"));
 		}
 
-		// get best move if there is win condition
-		for (Coordinate coordinate : moves) {
-			if (coordinate.value == 1) {
-				bestMove = coordinate;
-			} else if (coordinate.value == -1 && bestMove.value != 1) {
-				bestMove = coordinate;
-			} else continue;
-		}
+		bestMove = getBestMove(moves);
 
-		if (bestMove.value == 0) {
+		if (bestMove.col == -1 || bestMove.row == -1) {
 			bestMove = lookForWinConditions(grid, ai, weight - 1, bestMove);
 		}
 
+		return bestMove;
+	}
+
+	private Coordinate getBestMove(ArrayList<Coordinate> moves) {
+
+		int[][] multiplicity = new int[5][5];
+		for (int row = 0; row < 5; row++) {
+			for (int col = 0; col < 5; col++) {
+				multiplicity[row][col] = 0;
+			}
+		}
+
+		for (Coordinate coordinate : moves) {
+			int row = coordinate.row;
+			int col = coordinate.col;
+			multiplicity[row][col]++;
+		}
+
+		Coordinate bestMove = new Coordinate();
+		for (int row = 0; row < 5; row++) {
+			for (int col = 0; col < 5; col++) {
+				if (bestMove.multiplicity < multiplicity[row][col]) {
+					bestMove.col = col;
+					bestMove.row = row;
+					bestMove.multiplicity = multiplicity[row][col];
+				} 
+			}
+		}
 		return bestMove;
 	}
 
@@ -223,8 +238,8 @@ public class AI {
 					int entry = grid[4 - idx][idx].entry;
 					if (entry != 0) continue;
 					else {
-						coordinate.row = idx;
-						coordinate.col = line;
+						coordinate.row = 4 - idx;
+						coordinate.col = idx;
 					}
 				} break;	
 		}
