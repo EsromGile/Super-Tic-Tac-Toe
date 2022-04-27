@@ -36,11 +36,10 @@ public class Peer {
         oos = new ObjectOutputStream(os);
         // System.out.println("peer step 6");
         ois = panel.getOis();
-        if(ois == null) System.out.println("NULLLL");
         System.out.println("peer obj created");
     }
 
-    public void sendCoordinates(GameElement piece, int x, int y) throws Exception {
+    public void sendCoordinates( int x, int y) throws Exception {
         // new Thread(new Runnable() {
 
         // @Override
@@ -64,11 +63,11 @@ public class Peer {
     }
     public void getCoordinates() throws Exception {
         System.out.println("get coord");
-        new Thread(new Runnable() {
-            ObjectInputStream ois = panel.getOis();
+        // new Thread(new Runnable() {
+        //     ObjectInputStream ois = panel.getOis();
 
-            @Override
-            public void run() {
+        //     @Override
+        //     public void run() {
                 try {
                     if (panel.getOis() == null) {
                         System.out.println("null ois");
@@ -82,8 +81,8 @@ public class Peer {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+            // }
+        // }).start();
     }
 
     public void closeEverything(Socket socket) {

@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import controller.Peer;
+import controller.PeerHandler;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 
@@ -59,7 +60,7 @@ public class AI implements Serializable{
 	}
 
 	public void takeTurn() throws Exception {
-
+		if((gamePanel.isNetwork() && PeerHandler.peerHandlers.size() <= 1)) return;
 		if((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
 			Coordinate bestMove = new Coordinate();
@@ -69,7 +70,8 @@ public class AI implements Serializable{
 			
 			if(gamePanel.isNetwork()){
 				//do stuff
-				
+				// peer.getCoordinates();
+				// peer.sendCoordinates(x, y);
 				// oos.writeObject(x);
 				// oos.writeObject(y);
 				// oos.flush();

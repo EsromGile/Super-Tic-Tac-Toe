@@ -56,8 +56,14 @@ public class EventListener implements ActionListener {
 		} else if (e.getSource() == menuPanel.getConnectServer()) {
 			try {
 				// create GamePanel
-
 				callNetwork();
+				// JFrame window = menuPanel.getWindow();
+				// window.getContentPane().removeAll();
+				// gamePanel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
+				// // addPeer();
+				// gamePanel.createNetworkPanel(); // needs to be changed to createNetworkPanel
+				// window.pack();
+				// window.setVisible(true);
 				// run server
 				Server.main(null, gamePanel);
 				// also create peer
@@ -70,7 +76,7 @@ public class EventListener implements ActionListener {
 			try {
 				callNetwork();
 				addPeer();
-				
+
 			} catch (Exception e3) {
 				System.out.println(e3);
 			}
@@ -93,23 +99,24 @@ public class EventListener implements ActionListener {
 		return name;
 	}
 	public void callNetwork() {
-		try {
-			// create game panel
-			JFrame window = menuPanel.getWindow();
-			window.getContentPane().removeAll();
-			gamePanel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
-			gamePanel.createNetworkPanel(); // needs to be changed to createNetworkPanel
-			window.pack();
-			window.setVisible(true);
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+	try {
+	// create game panel
+	JFrame window = menuPanel.getWindow();
+	window.getContentPane().removeAll();
+	gamePanel = new GamePanel(window, menuPanel.getPlayerOne().isSelected());
+	//addPeer();
+	gamePanel.createNetworkPanel(); // needs to be changed to createNetworkPanel
+	window.pack();
+	window.setVisible(true);
+
+	} catch (Exception e) {
+	System.out.println(e);
+	}
 	}
 
-	public void addPeer(){
+	public void addPeer() {
 		try {
-			
+
 			System.out.println("1 ");
 			// get player x or o
 			if (!gamePanel.getPlayerX()) {
@@ -124,12 +131,12 @@ public class EventListener implements ActionListener {
 			Socket socket = new Socket();
 			SocketAddress sa = new InetSocketAddress(ipAddress, 4216);
 			socket.connect(sa);
-			
+
 			System.out.println("3");
 			// create peer
 			peer = new Peer(socket, name, gamePanel);
 			gamePanel.setPeer(peer);
-			
+
 			System.out.println("4");
 			menuPanel.getConnectPeer().setEnabled(false);
 			oos = peer.getOos();
