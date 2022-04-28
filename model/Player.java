@@ -31,7 +31,7 @@ public class Player {
 						}
 
 						gamePanel.getCanvas().repaint();
-						gamePanel.getTicTacToeGame().printGameBoard();					
+						//gamePanel.getTicTacToeGame().printGameBoard();					
 						
 						gamePanel.getTicTacToeGame().checkWin();
 						gamePanel.getTicTacToeGame().checkDraw();

@@ -45,9 +45,10 @@ public class Peer {
         // @Override
         // public void run() {
         // try {
-        // System.out.println("send coord");&& panel.isMouseClick() == true
-        while (socket.isConnected() ) {
-            System.out.println("mouseclick: " + panel.isMouseClick());
+        System.out.println("send coord");
+        //&& panel.isMouseClick() == true
+        if (socket.isConnected() ) {
+            //System.out.println("mouseclick: " + panel.isMouseClick());
             // oos.writeObject(piece);
             oos.writeObject(x);
             oos.writeObject(y);
@@ -55,6 +56,7 @@ public class Peer {
             oos.flush();
             //panel.setMouseClick(false);
         }
+        System.out.println("send coord 2");
         // } catch (IOException e) {
         // e.printStackTrace();
         // }
@@ -63,16 +65,17 @@ public class Peer {
     }
     public void getCoordinates() throws Exception {
         System.out.println("get coord");
+        ois = panel.getOis();
         // new Thread(new Runnable() {
         //     ObjectInputStream ois = panel.getOis();
 
         //     @Override
         //     public void run() {
                 try {
-                    if (panel.getOis() == null) {
+                    if (ois == null) {
                         System.out.println("null ois");
                     }
-                    while (socket.isConnected()) {
+                    if (socket.isConnected()) {
                         // IShapeDraw shape = (IShapeDraw) ois.readObject();
                         int x = (Integer) ois.readObject();
                         int y = (Integer) ois.readObject();

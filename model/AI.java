@@ -14,7 +14,7 @@ import controller.PeerHandler;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 
-public class AI implements Serializable{
+public class AI implements Serializable {
 
 	private class Coordinate {
 		public int row;
@@ -45,56 +45,64 @@ public class AI implements Serializable{
 		}
 	}
 
-
 	private GamePanel gamePanel;
 	private int x;
 	private int y;
-	private ObjectOutputStream oos; 
-	private ObjectInputStream ois; 
-	private Peer peer; 
+	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
+	private Peer peer;
 
-	public AI(GamePanel gamePanel){
+	public AI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		oos = gamePanel.getOos();
 		ois = gamePanel.getOis();
+
 	}
 
 	public void takeTurn() throws Exception {
-		if((gamePanel.isNetwork() && PeerHandler.peerHandlers.size() <= 1)) return;
-		if((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
+		if (gamePanel.isNetwork() && PeerHandler.peerHandlers.size() <= 1) {
+			System.out.println("not enough players yet");
+			return;
+		}
+
+
+		
+		if ((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
 			Coordinate bestMove = new Coordinate();
 			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 4, bestMove);
 			x = bestMove.row;
 			y = bestMove.col;
-			
-			if(gamePanel.isNetwork()){
+
+			if(gamePanel.isNetwork() ){
 				//do stuff
-				// peer.getCoordinates();
-				// peer.sendCoordinates(x, y);
-				// oos.writeObject(x);
-				// oos.writeObject(y);
-				// oos.flush();
-				// oos.reset();
+				peer = gamePanel.getPeer();
+				//System.out.println("send peer info");
+				if(peer != null){
+					System.out.println("actually send peer info");
+					peer.sendCoordinates(x, y);
+					
+					//peer.getCoordinates();
+				}
 			}
-				
+
 			ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
 
-			//Adds a 1.5 second delay before the AI places its mark
+			// Adds a 1.5 second delay before the AI places its mark
 			Timer timer1 = new Timer();
 			timer1.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					marks.add(new GameElement(gamePanel.getTicTacToeGame().getBoundingBox(x, y).x + 5,
-										gamePanel.getTicTacToeGame().getBoundingBox(x, y).y + 5, 
-										gamePanel.getGamePlayerTurn().getState()));
-					if(gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-						gamePanel.getTicTacToeGame().setEntry(x, y, 1);	//Set to X
+							gamePanel.getTicTacToeGame().getBoundingBox(x, y).y + 5,
+							gamePanel.getGamePlayerTurn().getState()));
+					if (gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+						gamePanel.getTicTacToeGame().setEntry(x, y, 1); // Set to X
 					} else {
-						gamePanel.getTicTacToeGame().setEntry(x, y, 2);	//Set to O
+						gamePanel.getTicTacToeGame().setEntry(x, y, 2); // Set to O
 					}
 					gamePanel.getCanvas().repaint();
-					gamePanel.getTicTacToeGame().printGameBoard();
+					// gamePanel.getTicTacToeGame().printGameBoard();
 
 					gamePanel.getTicTacToeGame().checkWin();
 					gamePanel.getTicTacToeGame().checkDraw();
@@ -102,8 +110,8 @@ public class AI implements Serializable{
 					timer1.purge();
 				}
 			}, 1500);
-			
-			//After the AI places mark, delay for 5 seconds, then go to next state
+
+			// After the AI places mark, delay for 5 seconds, then go to next state
 			Timer timer2 = new Timer();
 
 			timer2.schedule(new TimerTask() {
@@ -115,14 +123,18 @@ public class AI implements Serializable{
 					timer2.purge();
 				}
 			}, 5000L);
-
 			gamePanel.getCanvas().repaint();
 		}
-	
+		else if(gamePanel.isNetwork()){
+			peer = gamePanel.getPeer();
+			peer.getCoordinates();
+		}
+
 	}
 
-	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight, Coordinate bestMove) {
-		
+	public Coordinate lookForWinConditions(TicTacToe.TicTacToeSquare[][] grid, int ai, int weight,
+			Coordinate bestMove) {
+
 		// base case
 		if ((weight < 0) && (bestMove.value == 0)) {
 			Coordinate move = new Coordinate();
@@ -130,12 +142,12 @@ public class AI implements Serializable{
 			move.row = r.nextInt(5);
 			move.col = r.nextInt(5);
 
-			while(!gamePanel.getTicTacToeGame().spotTaken(move.row, move.col)){
+			while (!gamePanel.getTicTacToeGame().spotTaken(move.row, move.col)) {
 				move.row = r.nextInt(5);
 				move.col = r.nextInt(5);
 			}
 			return move;
-		} else if (weight < 0) 
+		} else if (weight < 0)
 			return bestMove;
 
 		// intialize weights
@@ -151,7 +163,7 @@ public class AI implements Serializable{
 		for (int i = 0; i < 2; i++) {
 			diags.add(new Weight());
 		}
-		
+
 		// compute weights
 		for (int idx = 0; idx < 5; idx++) {
 			rows.set(idx, checkWeight(grid, rows.get(idx), "row", idx, ai));
@@ -159,7 +171,7 @@ public class AI implements Serializable{
 		}
 		diags.set(0, checkWeight(grid, diags.get(0), "leftDiag", -1, ai));
 		diags.set(1, checkWeight(grid, diags.get(1), "rightDiag", -1, ai));
-		
+
 		ArrayList<Coordinate> moves = new ArrayList<>();
 
 		// get win/loss conditions
@@ -167,7 +179,7 @@ public class AI implements Serializable{
 		for (int row = 0; row < 5; row++) {
 			condition = getWinCondition(rows.get(row), weight);
 			if (condition == -1 || condition == 1) {
-			    moves.add(getConditionLocation(grid, row, "row"));
+				moves.add(getConditionLocation(grid, row, "row"));
 			}
 			for (int col = 0; col < 5; col++) {
 				condition = getWinCondition(cols.get(col), weight);
@@ -216,7 +228,7 @@ public class AI implements Serializable{
 					bestMove.col = col;
 					bestMove.row = row;
 					bestMove.multiplicity = multiplicity[row][col];
-				} 
+				}
 			}
 		}
 		return bestMove;
@@ -224,65 +236,72 @@ public class AI implements Serializable{
 
 	private Coordinate getConditionLocation(TicTacToe.TicTacToeSquare[][] grid, int line, String lineType) {
 		Coordinate coordinate = new Coordinate();
-		switch(lineType) {
+		switch (lineType) {
 			case "row":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[line][idx].entry;
-					if (entry != 0) continue;
+					if (entry != 0)
+						continue;
 					else {
 						coordinate.row = line;
 						coordinate.col = idx;
 					}
-				} break;
+				}
+				break;
 
 			case "col":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[idx][line].entry;
-					if (entry != 0) continue;
+					if (entry != 0)
+						continue;
 					else {
 						coordinate.row = idx;
 						coordinate.col = line;
 					}
-				} break;
+				}
+				break;
 
 			case "leftDiag":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[idx][idx].entry;
-					if (entry != 0) continue;
+					if (entry != 0)
+						continue;
 					else {
 						coordinate.row = idx;
 						coordinate.col = idx;
 					}
-				} break;
+				}
+				break;
 
 			case "rightDiag":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[4 - idx][idx].entry;
-					if (entry != 0) continue;
+					if (entry != 0)
+						continue;
 					else {
 						coordinate.row = 4 - idx;
 						coordinate.col = idx;
 					}
-				} break;	
+				}
+				break;
 		}
 		return coordinate;
-	}	
+	}
 
 	private int getWinCondition(Weight line, int weight) {
 		int placeValue = 0;
 		if (line.player == 0 && line.ai == weight) {
-			placeValue = 1;		//win
+			placeValue = 1; // win
 		} else if (line.ai == 0 && line.player == weight) {
-			placeValue = -1;	//loss
+			placeValue = -1; // loss
 		}
 		return placeValue;
 	}
 
-	
 	private Weight checkWeight(TicTacToe.TicTacToeSquare[][] grid, Weight line, String lineType, int lineNum, int ai) {
-		switch(lineType) {
+		switch (lineType) {
 			case "row":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[lineNum][idx].entry;
 					if (entry == 0) {
 						continue;
@@ -291,10 +310,11 @@ public class AI implements Serializable{
 					} else {
 						line.player++;
 					}
-				} break;
+				}
+				break;
 
 			case "col":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[idx][lineNum].entry;
 					if (entry == 0) {
 						continue;
@@ -303,10 +323,11 @@ public class AI implements Serializable{
 					} else {
 						line.player++;
 					}
-				} break;
+				}
+				break;
 
 			case "leftDiag":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[idx][idx].entry;
 					if (entry == 0) {
 						continue;
@@ -315,10 +336,11 @@ public class AI implements Serializable{
 					} else {
 						line.player++;
 					}
-				} break;
+				}
+				break;
 
 			case "rightDiag":
-				for(int idx = 0; idx < 5; idx++) {
+				for (int idx = 0; idx < 5; idx++) {
 					int entry = grid[4 - idx][idx].entry;
 					if (entry == 0) {
 						continue;
@@ -327,12 +349,14 @@ public class AI implements Serializable{
 					} else {
 						line.player++;
 					}
-				} break;	
+				}
+				break;
 		}
 		return line;
 	}
+
 	public void setPeer(Peer peer) {
 		this.peer = peer;
 	}
-	
+
 }

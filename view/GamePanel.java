@@ -122,7 +122,7 @@ public class GamePanel {
             window.setVisible(true);
         });
         network = true;
-        aiPlayer.takeTurn();
+        // aiPlayer.takeTurn();
         //checkIfConnected();
     }
 
@@ -188,5 +188,8 @@ public class GamePanel {
 
     public void setPeer(Peer peer) {
         this.peer = peer;
+    }
+    public Peer getPeer() {
+        return peer;
     }
 }

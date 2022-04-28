@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.awt.BasicStroke;
 
 import javax.swing.JPanel;
@@ -18,7 +19,7 @@ public class TicTacToeCanvas extends JPanel {
     private GamePanel gamePanel;
     private ArrayList<GameElement> marks = new ArrayList<>();
     private int secondsLeft;
-    private ArrayList<String> textArray = new ArrayList<>(); 
+    private CopyOnWriteArrayList<String> textArray = new CopyOnWriteArrayList<>(); 
 
     public TicTacToeCanvas(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -76,7 +77,7 @@ public class TicTacToeCanvas extends JPanel {
         }
 
     }
-    public ArrayList<String> getTextArray() {
+    public CopyOnWriteArrayList<String> getTextArray() {
         return textArray;
     }
     

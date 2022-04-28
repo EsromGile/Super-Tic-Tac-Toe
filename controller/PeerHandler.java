@@ -25,6 +25,7 @@ public class PeerHandler implements Runnable {
         panel.getCanvas().getTextArray().add("SERVER: " + peerUsername + " has entered the chat!");
         // is = panel.getOis(); 
         ois = panel.getOis();
+        checkConnectionNum();
         //is = socket.getInputStream();
         //ois = new ObjectInputStream(is);
     }
@@ -49,12 +50,19 @@ public class PeerHandler implements Runnable {
     public void broadcastMessage() throws Exception{
         for(PeerHandler peerHandler:peerHandlers){
             if(!peerHandler.peerUsername.equals(peerUsername)){
-                panel.getCanvas().getMarks();
+
+                //panel.getCanvas().getMarks();
                 panel.getCanvas().repaint();
-                //peerHandler.
-                // peerHandler.bufferedWriter.write(messageToSend);
-                // peerHandler.bufferedWriter.newLine();
-                // peerHandler.bufferedWriter.flush();
+                
+            }
+        }
+    }
+    public void checkConnectionNum() throws Exception{
+        if(peerHandlers.size() > 1){
+            for(PeerHandler peerHandler:peerHandlers){
+                //if(!peerHandler.peerUsername.equals(peerUsername)){
+                    panel.getAiPlayer().takeTurn();
+                //}
             }
         }
     }
