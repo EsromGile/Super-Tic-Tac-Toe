@@ -54,7 +54,7 @@ public class PeerHandler implements Runnable {
             if(!peerHandler.peerUsername.equals(peerUsername)){
 
                 //panel.getCanvas().getMarks();
-                panel.getCanvas().repaint();
+                peerHandler.panel.getCanvas().repaint();
                 
             }
         }
@@ -64,7 +64,7 @@ public class PeerHandler implements Runnable {
             panel.setGameState(GameState.PLAYING);
             for(PeerHandler peerHandler:peerHandlers){
                 //if(!peerHandler.peerUsername.equals(peerUsername)){
-                    panel.getAiPlayer().takeTurn();
+                    peerHandler.panel.getAiPlayer().takeTurn();
                 //}
             }
         }
