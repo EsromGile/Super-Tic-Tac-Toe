@@ -10,10 +10,12 @@ import javax.imageio.ImageIO;
 public class ImageStore {
     public static BufferedImage xMark;
     public static BufferedImage oMark;
+    public static BufferedImage kirby;
 
     static {
         xMark = readImage("model/Images/Kirby_X_2.png", 70, 70);
         oMark = readImage("model/Images/Kirby_O.png", 70, 70);
+        kirby = readImage("model/Images/Kirby_Plays_Tic_Tac_Toe.png", 500, 449);
     }
 
     //This function reads in an image from the file using it's path, and resizes it to the given width and height

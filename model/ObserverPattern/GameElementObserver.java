@@ -19,17 +19,17 @@ public class GameElementObserver implements Observer {
 
 	@Override
 	public void winCondition() {
-		GamePlayerState state = gamePanel.getGamePlayerTurn().getState();
-		
-		if (state instanceof GamePlayerX) {
-			System.out.println("X won for some reason");
+		if (gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
+			gamePanel.setGameState(GamePanel.GameState.X_WIN);
 		} else {
-			System.out.println("O won");
+			gamePanel.setGameState(GamePanel.GameState.O_WIN);
 		}
+		gamePanel.getCanvas().repaint();
 	}
 
 	@Override
 	public void drawCondition() {
-		System.out.println("Draw");
+		gamePanel.setGameState(GamePanel.GameState.DRAW);
+		gamePanel.getCanvas().repaint();
 	}
 }

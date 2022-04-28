@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import view.GamePanel;
+import view.GamePanel.GameState;
 
 public class GamePlayerTurn {
 	private GamePlayerState state;
@@ -23,7 +24,7 @@ public class GamePlayerTurn {
 	public void goNextState() {
 		state.goNext(this);
 		canClick = !canClick;
-		if(!canClick){
+		if(!canClick && !gamePanel.isNetwork()){
 			timer.cancel();
 			task.cancel();
 		}
@@ -54,6 +55,8 @@ public class GamePlayerTurn {
 			public void run() {
 				
 				if(seconds <= 0) {
+					if(gamePanel.getGameState() == GameState.PLAYING)
+						gamePanel.setGameState(GameState.TIMEOUT);
 					timer.cancel();
 					timer.purge();
 				}

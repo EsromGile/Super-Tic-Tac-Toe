@@ -23,12 +23,18 @@ import model.StatePattern.GamePlayerTurn;
 
 public class GamePanel {
 
+    public enum GameState {
+        PLAYING, X_WIN, O_WIN, DRAW, WAITING_FOR_CONNECTION, TIMEOUT
+    }
+
+    private GameState gameState;
     private JFrame window;
     private TicTacToeCanvas canvas;
     private GamePlayerTurn gamePlayerTurn;
     private TicTacToe ticTacToeGame;
     private GamePlayer gamePlayer;
     private boolean playerX;
+    MouseEventListener mouseEventListener;
     private AI aiPlayer = new AI(this);
     private Player manPlayer = new Player(this);
     private ObjectOutputStream oos;
@@ -40,6 +46,7 @@ public class GamePanel {
     public GamePanel(JFrame window, boolean playerX) {
         this.window = window;
         this.playerX = playerX;
+        window.setPreferredSize(new Dimension(600, 675));
     }
     // public GamePanel(JFrame window, boolean playerX,Peer peer){
     // this.window = window;
@@ -54,7 +61,7 @@ public class GamePanel {
         // main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
         canvas = new TicTacToeCanvas(this);
-        MouseEventListener mouseEventListener = new MouseEventListener(this);
+        mouseEventListener = new MouseEventListener(this);
         canvas.addMouseListener(mouseEventListener);
         mainPanel.add(canvas);
 
@@ -72,6 +79,7 @@ public class GamePanel {
         // gamePlayer = new GamePlayer();
         gamePlayerTurn = new GamePlayerTurn(this);
         ticTacToeGame = new TicTacToe();
+        gameState = GameState.PLAYING;
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);
         EventListener timerListener = new EventListener(this);
@@ -89,6 +97,8 @@ public class GamePanel {
     }
 
     public void createNetworkPanel() throws Exception {
+        network = true;
+
         Container cp = window.getContentPane();
         cp.setPreferredSize(new Dimension(600, 650));
         window.setTitle("Super-Tic-Tac-Toe (AI vs. AI)");
@@ -111,6 +121,7 @@ public class GamePanel {
         // Start Game
         gamePlayerTurn = new GamePlayerTurn(this);
         ticTacToeGame = new TicTacToe();
+        gameState = GameState.WAITING_FOR_CONNECTION;
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);
 
@@ -121,7 +132,6 @@ public class GamePanel {
             window.pack();
             window.setVisible(true);
         });
-        network = true;
         // aiPlayer.takeTurn();
         //checkIfConnected();
     }
@@ -191,5 +201,17 @@ public class GamePanel {
     }
     public Peer getPeer() {
         return peer;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public void setGamePlayerTurn(GamePlayerTurn gamePlayerTurn) {
+        this.gamePlayerTurn = gamePlayerTurn;
     }
 }

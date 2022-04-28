@@ -33,7 +33,7 @@ public class Server extends Thread {
                 
                 addPeerHandler(socket, panel);
                 panel.getCanvas().getTextArray()
-                        .add("a new client has connected" + socket.getLocalAddress() + " " + socket.getInetAddress());
+                        .add("A new client has connected" + " " + socket.getLocalAddress() + " " + socket.getInetAddress());
                 panel.getCanvas().repaint();
                 // System.out.println("A new client has connected!" + socket.getLocalAddress() +
                 // " " + socket.getInetAddress() + " " + serverSocket.getInetAddress());

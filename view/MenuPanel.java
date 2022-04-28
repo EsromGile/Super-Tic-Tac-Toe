@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import controller.EventListener;
@@ -18,18 +19,22 @@ import model.Images.ImageStore;
 
 public class MenuPanel {
     private JFrame window;
-    private JButton connectNetwork = new JButton("Create Network");
-    private JButton connectPeer = new JButton("Connect As Peer");
+    private JButton connectNetwork = new JButton("Create Server");
+    private JButton connectPeer = new JButton("Join a Server");
     private JTextField ipAddress = new JTextField(15);
-    private JButton standAloneButton = new JButton("Stand Alone");
-    //private JButton networkButton = new JButton("Network");
+    private JButton standAloneButton = new JButton("Stand Alone Mode");
+    private JButton networkButton = new JButton("Network Mode");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
     // private boolean network = false;
     private boolean isPeerConnected = false;
+    private EventListener listener = new EventListener(this);
 
     public MenuPanel(JFrame window) {
         this.window = window;
+        window.setLocation(400, 100);
+		window.setTitle("Menu Screen");
+        window.setPreferredSize(new Dimension(500, 500));
     }
 
     public void init() {
@@ -39,12 +44,12 @@ public class MenuPanel {
         JPanel menuPanel = new JPanel();
         JPanel southPanel = new JPanel();
         JPanel playerPanel = new JPanel();
-        JPanel networkPanel = new JPanel();
+        // JPanel networkPanel = new JPanel();
         southPanel.setBorder(new EmptyBorder(0, 0, 50, 0));
-        southPanel.setLayout(new GridLayout(2, 1));
-        // menuPanel.setLayout(new GridLayout(3,1));
+        //southPanel.setLayout(new GridLayout(2, 1));
+        //menuPanel.setLayout(new GridLayout(3,1));
 
-        southPanel.add(networkPanel);
+        //menuPanel.add(networkPanel);
         southPanel.add(playerPanel);
         GridBagLayout layout = new GridBagLayout();
         menuPanel.setLayout(layout);
@@ -55,39 +60,43 @@ public class MenuPanel {
         ticTac.setFont(new Font("Courier New", Font.BOLD, 30));
         northPanel.add(ticTac);
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 0;
         JLabel sLabel = new JLabel("Select Mode to Start: ");
         menuPanel.add(sLabel, gbc);
 
         // middle section
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 1;
-
         menuPanel.add(standAloneButton, gbc);
-        // gbc.gridx = 1;
-        // gbc.gridy = 2;
-        // menuPanel.add(networkButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        menuPanel.add(networkButton, gbc);
 
         // bottom section
-        GridBagLayout networkLayout = new GridBagLayout();
-        networkPanel.setLayout(networkLayout);
-        GridBagConstraints ngbc = new GridBagConstraints();
+        // GridBagLayout networkLayout = new GridBagLayout();
+        // networkPanel.setLayout(networkLayout);
+        // GridBagConstraints ngbc = new GridBagConstraints();
 
-        networkPanel.setBorder(BorderFactory.createTitledBorder("Network(connect peer will begin game): "));
-        JLabel player = new JLabel("Enter IP:");
-        ngbc.gridx = 0;
-        ngbc.gridy = 0;
-        networkPanel.add(player, ngbc);
-        ngbc.gridx = 0;
-        ngbc.gridy = 1;
-        networkPanel.add(connectNetwork, ngbc);
-        ngbc.gridx = 1;
-        ngbc.gridy = 0;
-        networkPanel.add(ipAddress, ngbc);
-        ngbc.gridx = 1;
-        ngbc.gridy = 1;
-        networkPanel.add(connectPeer, ngbc);
+        // Border compound;
+        // Border empty = new EmptyBorder(20, 0, 0, 0);
+        // Border title = BorderFactory.createTitledBorder(" Network Mode (connect peer will begin game): ");
+        // compound = BorderFactory.createCompoundBorder(empty, title);
+        // networkPanel.setBorder(compound);
+        // JLabel player = new JLabel("Enter IP:");
+        // ngbc.gridx = 0;
+        // ngbc.gridy = 0;
+        // networkPanel.add(player, ngbc);
+        // ngbc.gridx = 0;
+        // ngbc.gridy = 1;
+        // networkPanel.add(connectNetwork, ngbc);
+        // ngbc.gridx = 1;
+        // ngbc.gridy = 0;
+        // networkPanel.add(ipAddress, ngbc);
+        // ngbc.gridx = 1;
+        // ngbc.gridy = 1;
+        // networkPanel.add(connectPeer, ngbc);
 
         GridBagLayout southLayout = new GridBagLayout();
         playerPanel.setLayout(southLayout);
@@ -125,11 +134,11 @@ public class MenuPanel {
         cp.add(BorderLayout.CENTER, menuPanel);
         cp.add(BorderLayout.SOUTH, southPanel);
 
-        EventListener listener = new EventListener(this);
-        //networkButton.addActionListener(listener);
-        connectPeer.addActionListener(listener);
-        connectNetwork.addActionListener(listener);
         standAloneButton.addActionListener(listener);
+
+        //networkButton.addActionListener(listener);
+        // connectPeer.addActionListener(listener);
+        // connectNetwork.addActionListener(listener);
 
         // standAloneButton.addActionListener(event -> {
         // window.getContentPane().removeAll();
@@ -139,10 +148,61 @@ public class MenuPanel {
         // window.setVisible(true);
         // });
 
-        // networkButton.addActionListener(event -> {
+        networkButton.addActionListener(event -> {
+            showNetworkOptions();
+        });
 
-        // });
+    }
 
+    public void showNetworkOptions() {
+        window.getContentPane().removeAll();
+        window.setTitle("Network Options");
+        window.setPreferredSize(new Dimension(400, 200));
+
+        JPanel networkPanel = new JPanel();
+
+        GridBagLayout networkLayout = new GridBagLayout();
+        networkPanel.setLayout(networkLayout);
+        GridBagConstraints ngbc = new GridBagConstraints();
+
+        JLabel player = new JLabel("Enter IP Address:");
+        ngbc.gridx = 0;
+        ngbc.gridy = 0;
+        networkPanel.add(player, ngbc);
+        ngbc.gridx = 0;
+        ngbc.gridy = 1;
+        networkPanel.add(connectNetwork, ngbc);
+        ngbc.gridx = 1;
+        ngbc.gridy = 0;
+        networkPanel.add(ipAddress, ngbc);
+        ngbc.gridx = 1;
+        ngbc.gridy = 1;
+        networkPanel.add(connectPeer, ngbc);
+
+        connectPeer.addActionListener(listener);
+        connectNetwork.addActionListener(listener);
+        standAloneButton.addActionListener(listener);
+
+        JPanel southPanel = new JPanel();
+        JButton backButton = new JButton("Back");
+        southPanel.add(backButton);
+
+
+        backButton.addActionListener(event -> {
+            window.getContentPane().removeAll();
+            var panel = new MenuPanel(window);
+            panel.init();
+            window.pack();
+            window.setVisible(true);
+        });
+
+        Container cp = window.getContentPane();
+        cp.add(networkPanel, BorderLayout.CENTER);
+        cp.add(BorderLayout.SOUTH, southPanel);
+
+        window.pack();
+		window.setVisible(true);
+        
     }
 
     public JButton getConnectPeer() {

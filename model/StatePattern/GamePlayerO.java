@@ -3,8 +3,9 @@ package model.StatePattern;
 public class GamePlayerO implements GamePlayerState {
 
 	public GamePlayerO(GamePlayerTurn context) {
-		if(!context.getGamePanel().getPlayerX())				//Start countdown if Player is O
-			context.startTurnCountdown();
+		if(context.getGamePanel().isNetwork() == false)
+			if(!context.getGamePanel().getPlayerX())				//Start countdown if Player is O
+				context.startTurnCountdown();
 	}
 
 	@Override

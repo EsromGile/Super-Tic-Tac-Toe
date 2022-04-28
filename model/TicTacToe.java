@@ -13,7 +13,12 @@ public class TicTacToe implements Subject, Serializable{
 	public enum Event {
 		WinDetected, DrawDetected
 	};
+
+	public enum Line {
+		LEFT_DIAGONAL, RIGHT_DIAGONAL, ROW1, ROW2, ROW3, ROW4, ROW5, COL1, COL2, COL3, COL4, COL5
+	}
 	ArrayList<Observer> observers = new ArrayList<>();
+	private Line winningLine;
 
 	public class TicTacToeSquare {
 		private Rectangle boundingBox; 		//boundingBox refers to the area on the canvas that the square covers
@@ -80,6 +85,10 @@ public class TicTacToe implements Subject, Serializable{
 		return isEmpty(x, y);	// not sure why this is??
 	}
 
+	public Line getWinningLine() {
+		return winningLine;
+	}
+
 	// draw only happens when all spots are full
 	public void checkDraw() {
 		for (int row = 0; row < 5; row++) {
@@ -97,13 +106,51 @@ public class TicTacToe implements Subject, Serializable{
 
 		isWin = checkLeftDiagonal() || checkRightDiagonal();
 
+		if(isWin) {
+			if(checkLeftDiagonal())
+				winningLine = Line.LEFT_DIAGONAL;
+			else if(checkRightDiagonal())
+				winningLine = Line.RIGHT_DIAGONAL;
+		}
+
 		int index = 0;
 		while (!isWin && index < 5) {
 			isWin = checkColumn(index) || checkRow(index);
+
+			if(isWin) {
+				if(checkColumn(index)) {
+					switch(index) {
+						case 0: winningLine = Line.COL1;
+								break;
+						case 1: winningLine = Line.COL2;
+								break;
+						case 2: winningLine = Line.COL3;
+								break;
+						case 3: winningLine = Line.COL4;
+								break;
+						case 4: winningLine = Line.COL5;
+								break;
+					}
+				}
+				else if(checkRow(index)) {
+					switch(index) {
+						case 0: winningLine = Line.ROW1;
+								break;
+						case 1: winningLine = Line.ROW2;
+								break;
+						case 2: winningLine = Line.ROW3;
+								break;
+						case 3: winningLine = Line.ROW4;
+								break;
+						case 4: winningLine = Line.ROW5;
+								break;
+					}
+				}
+			}
 			index++;
 		}
 
-		if(isWin) 
+		if(isWin)
 			notifyObservers(Event.WinDetected);
 	}
 

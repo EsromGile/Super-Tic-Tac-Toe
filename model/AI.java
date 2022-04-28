@@ -13,6 +13,7 @@ import controller.Peer;
 import controller.PeerHandler;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
+import view.GamePanel.GameState;
 
 public class AI implements Serializable {
 
@@ -60,6 +61,7 @@ public class AI implements Serializable {
 	}
 
 	public void takeTurn() throws Exception {
+		if(gamePanel.getGameState() != GameState.PLAYING) return;
 		if (gamePanel.isNetwork() && PeerHandler.peerHandlers.size() <= 1) {
 			System.out.println("not enough players yet");
 			return;
@@ -86,7 +88,7 @@ public class AI implements Serializable {
 
 			ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
 
-			// Adds a 1.5 second delay before the AI places its mark
+			// Adds a 1 second delay before the AI places its mark
 			Timer timer1 = new Timer();
 			timer1.schedule(new TimerTask() {
 				@Override
@@ -107,7 +109,7 @@ public class AI implements Serializable {
 					timer1.cancel();
 					timer1.purge();
 				}
-			}, 1500);
+			}, 1000);
 
 			// After the AI places mark, delay for 5 seconds, then go to next state
 			Timer timer2 = new Timer();
@@ -116,7 +118,7 @@ public class AI implements Serializable {
 				@Override
 				public void run() {
 					gamePanel.getGamePlayerTurn().goNextState();
-					System.out.print("Timer Ended");
+					//System.out.print("Timer Ended");
 					timer2.cancel();
 					timer2.purge();
 				}

@@ -6,7 +6,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import model.GameElement;
+import model.StatePattern.GamePlayerTurn;
 import view.GamePanel;
+import view.GamePanel.GameState;
 
 public class PeerHandler implements Runnable {
     public static ArrayList<PeerHandler> peerHandlers = new ArrayList<>(); 
@@ -22,7 +24,7 @@ public class PeerHandler implements Runnable {
         this.panel = panel ;
         this.peerUsername = peerName;//pulling wrong user
         peerHandlers.add(this);
-        panel.getCanvas().getTextArray().add("SERVER: " + peerUsername + " has entered the chat!");
+        panel.getCanvas().getTextArray().add(peerUsername + " has joined the server!");
         // is = panel.getOis(); 
         ois = panel.getOis();
         checkConnectionNum();
@@ -59,6 +61,7 @@ public class PeerHandler implements Runnable {
     }
     public void checkConnectionNum() throws Exception{
         if(peerHandlers.size() > 1){
+            panel.setGameState(GameState.PLAYING);
             for(PeerHandler peerHandler:peerHandlers){
                 //if(!peerHandler.peerUsername.equals(peerUsername)){
                     panel.getAiPlayer().takeTurn();

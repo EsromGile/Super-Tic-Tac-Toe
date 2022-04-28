@@ -1,6 +1,8 @@
 package controller;
 
 import view.GamePanel;
+import view.GamePanel.GameState;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ public class MouseEventListener implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(saPanel.getGameState() != GameState.PLAYING) return;
 		// Moved turn code to Player.java
 		try {
 			if (!saPanel.getGamePlayerTurn().getCanClick())
