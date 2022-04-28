@@ -65,8 +65,6 @@ public class AI implements Serializable {
 			return;
 		}
 
-
-		
 		if ((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
 			Coordinate bestMove = new Coordinate();
@@ -179,25 +177,25 @@ public class AI implements Serializable {
 		for (int row = 0; row < 5; row++) {
 			condition = getWinCondition(rows.get(row), weight);
 			if (condition == -1 || condition == 1) {
-				moves.add(getConditionLocation(grid, row, "row"));
+				moves.add(getConditionLocation(grid, row, "row", condition));
 			}
 			for (int col = 0; col < 5; col++) {
 				condition = getWinCondition(cols.get(col), weight);
 				if (condition == -1 || condition == 1) {
-					moves.add(getConditionLocation(grid, col, "col"));
+					moves.add(getConditionLocation(grid, col, "col", condition));
 				}
 			}
 		}
 		condition = getWinCondition(diags.get(0), weight);
 		if (condition == -1 || condition == 1) {
-			moves.add(getConditionLocation(grid, -1, "leftDiag"));
+			moves.add(getConditionLocation(grid, -1, "leftDiag", condition));
 		}
 		condition = getWinCondition(diags.get(1), weight);
 		if (condition == -1 || condition == 1) {
-			moves.add(getConditionLocation(grid, -1, "rightDiag"));
+			moves.add(getConditionLocation(grid, -1, "rightDiag", condition));
 		}
 
-		bestMove = getBestMove(moves);
+		bestMove = getBestMove(moves, weight);
 
 		if (bestMove.col == -1 || bestMove.row == -1) {
 			bestMove = lookForWinConditions(grid, ai, weight - 1, bestMove);
@@ -206,7 +204,15 @@ public class AI implements Serializable {
 		return bestMove;
 	}
 
-	private Coordinate getBestMove(ArrayList<Coordinate> moves) {
+	private Coordinate getBestMove(ArrayList<Coordinate> moves, int weight) {
+
+		// if win/lose condition -- make that move or block
+		if (weight == 4) {
+			for (Coordinate coordinate : moves) {
+				if (coordinate.value == 1 || coordinate.value == -1)
+					return coordinate;
+			}
+		}
 
 		int[][] multiplicity = new int[5][5];
 		for (int row = 0; row < 5; row++) {
@@ -234,7 +240,7 @@ public class AI implements Serializable {
 		return bestMove;
 	}
 
-	private Coordinate getConditionLocation(TicTacToe.TicTacToeSquare[][] grid, int line, String lineType) {
+	private Coordinate getConditionLocation(TicTacToe.TicTacToeSquare[][] grid, int line, String lineType, int condition) {
 		Coordinate coordinate = new Coordinate();
 		switch (lineType) {
 			case "row":
@@ -285,6 +291,7 @@ public class AI implements Serializable {
 				}
 				break;
 		}
+		coordinate.value = condition;
 		return coordinate;
 	}
 
