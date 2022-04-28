@@ -40,7 +40,7 @@ public class PeerHandler implements Runnable {
             try {
                 //marks =(ArrayList) ois.readObject();
                 
-                // messageFromClient = bufferedReader.readLine();
+                //messageFromClient = bufferedReader.readLine();
                 //broadcastMessage();
             } catch (Exception e) {
                 // TODO Auto-generated catch block

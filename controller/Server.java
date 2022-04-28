@@ -8,7 +8,7 @@ import java.net.Socket;
 import view.GamePanel;
 
 public class Server extends Thread {
-    private final ServerSocket serverSocket;
+    private static ServerSocket serverSocket;
     private final GamePanel panel;
     // private String name; 
     private InputStream is; 
@@ -93,6 +93,9 @@ public class Server extends Thread {
         server.start();
         //server.startServer();
         System.out.println("Server Created!");
+    }
+    public static ServerSocket getServerSocket() {
+        return serverSocket;
     }
 
 }
