@@ -1,101 +1,101 @@
 package controller;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import view.GamePanel;
+import view.GamePanel.GameState;
 
-public class Server extends Thread {
-    private static ServerSocket serverSocket;
-    private final GamePanel panel;
-    // private String name; 
-    private InputStream is; 
-    private ObjectInputStream ois; 
+public class Server extends Network implements Runnable {
 
-    public Server(ServerSocket serverSocket, GamePanel panel) {
-        this.serverSocket = serverSocket;
-        this.panel = panel;
+    private ServerSocket serverSocket;
+    private GamePanel gamePanel;
+    private PeerHandler peerHandler;
+
+    public Server(ServerSocket serverSocket, GamePanel gamePanel) {
+        try {
+            this.gamePanel = gamePanel;
+            this.serverSocket = serverSocket;
+            gamePanel.setServerObject(this);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
     public void run() {
-        // listen for connection on port 4216
-        while (!serverSocket.isClosed()) {
-            // closed in peer handler
+        try {
             Socket socket;
-            try {
-                socket = serverSocket.accept();
-                is = socket.getInputStream();
-                ois = new ObjectInputStream(is);
-                panel.setOis(ois);
-                
-                addPeerHandler(socket, panel);
-                panel.getCanvas().getTextArray()
-                        .add("A new client has connected" + " " + socket.getLocalAddress() + " " + socket.getInetAddress());
-                panel.getCanvas().repaint();
-                // System.out.println("A new client has connected!" + socket.getLocalAddress() +
-                // " " + socket.getInetAddress() + " " + serverSocket.getInetAddress());
-                
-                // if(panel.getPlayerX()){
-				// 	name = "X";
-				// } else {
-				// 	name = "O";
-				// }
-                // PeerHandler peerHandler = new PeerHandler(socket, panel,name );
-                // Thread thread = new Thread(peerHandler);
-                // thread.start();
-            } catch (Exception e) {
-                e.printStackTrace();
+            socket = serverSocket.accept();
+            peerHandler = new PeerHandler(gamePanel, socket);
+            gamePanel.setGameState(GameState.PLAYING);
+            gamePanel.getAiPlayer().takeTurn();
+            
+            gamePanel.getCanvas().repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // }
+    }
+
+    @Override
+    public void coordSent(int x, int y) {
+        if (gamePanel.isMyTurn()) {
+            updateMarks(x, y);
+        }
+        gamePanel.getCanvas().repaint();
+
+    }
+
+    private void updateMarks(int x, int y) {
+        if (!gamePanel.getTicTacToeGame().spotTaken(x, y)) {
+            gamePanel.getTicTacToeGame().setGrid(UpdateMarks.getGrid());
+            gamePanel.getTicTacToeGame().setEntry(x, y, gamePanel.getCurrentPlayer());
+        }
+        peerHandler.sendMark(new UpdateMarks(gamePanel.getTicTacToeGame().getGrid(), gamePanel.getCurrentPlayer()));
+    }
+
+    @Override
+    public void markReceived(Object object) {
+        try {
+            if (object instanceof PeerPlayMark) {
+                PeerPlayMark mark = (PeerPlayMark) object;
+                updateMarks(mark.getX(), mark.getY());
+                gamePanel.getAiPlayer().takeTurn();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        gamePanel.getCanvas().repaint();
+    }
 
-            // if not working add try catch and close server
+    @Override
+    public void close() {
+        try {
+            peerHandler.close();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-   
-    public void addPeerHandler(Socket socket,GamePanel panel) throws Exception {
-        try{
-        // System.out.println("socket step 2");    
-        String name = "";
-        // System.out.println("test 1");
-        if(panel.getOis() == null){
-            System.out.println("null ois");
+    public static void main(String[] args, GamePanel gamePanel) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(4216);
+            Server server = new Server(serverSocket, gamePanel);
+            Thread t = new Thread(server);
+            t.start();
+            gamePanel.getCanvas().getTextArray().add(serverSocket.getInetAddress().getLocalHost().getHostAddress());
+            gamePanel.getCanvas().repaint();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        // System.out.println("test 2");
-        if ((name = (String) ois.readObject()) != null) {
-            // System.out.println("test oos: " + name);
-            // System.out.println("peer handler step 1");
-            PeerHandler peerHandler;
-            // System.out.println("peer handler step 2");
-            peerHandler = new PeerHandler(socket, panel, name);
-            // System.out.println("peer handler step 3");
-            Thread thread = new Thread(peerHandler);
-            System.out.println("peer handler added:" + name);
-            thread.start();
-        } else {
-            System.out.println("does not works!");
-        }}catch(Exception e){
-            System.out.println(e);
-        }
-        // System.out.println("test 4");
     }
 
-    
-
-    public static void main(String[] args, GamePanel panel) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(4216);
-        Server server = new Server(serverSocket, panel);
-        System.out.println(serverSocket.getInetAddress().getLocalHost().getHostAddress());
-        panel.getCanvas().getTextArray().add(serverSocket.getInetAddress().getLocalHost().getHostAddress());
-        panel.getCanvas().repaint();
-        server.start();
-        //server.startServer();
-        System.out.println("Server Created!");
-    }
-    public static ServerSocket getServerSocket() {
-        return serverSocket;
+    public GamePanel getGamePanel() {
+        return gamePanel;
     }
 
 }

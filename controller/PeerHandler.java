@@ -1,90 +1,79 @@
 package controller;
 
-import java.io.InputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
-import model.GameElement;
-import model.StatePattern.GamePlayerTurn;
 import view.GamePanel;
-import view.GamePanel.GameState;
 
-public class PeerHandler implements Runnable {
-    public static ArrayList<PeerHandler> peerHandlers = new ArrayList<>(); 
-    private Socket socket; 
-    private String peerUsername; 
-    private GamePanel panel; 
-    //private ArrayList<GameElement> marks ;
-    private InputStream is; 
+public class PeerHandler extends Network implements Runnable {
+    public static ArrayList<PeerHandler> peerHandlers = new ArrayList<>();
+    private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    private GamePanel gamePanel;
 
-    public PeerHandler(Socket socket, GamePanel panel, String peerName) throws Exception{
-        this.socket = socket; 
-        this.panel = panel ;
-        this.peerUsername = peerName;//pulling wrong user
-        peerHandlers.add(this);
-        panel.getCanvas().getTextArray().add(peerUsername + " has joined the server!");
-        // is = panel.getOis(); 
-        ois = panel.getOis();
-        checkConnectionNum();
-        //is = socket.getInputStream();
-        //ois = new ObjectInputStream(is);
-    }
-    @Override
-    public void run() {
-        //String messageFromClient;
-        
-        
-        while(!socket.isConnected()){
-            try {
-                //marks =(ArrayList) ois.readObject();
-                
-                //messageFromClient = bufferedReader.readLine();
-                //broadcastMessage();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            
-        }
-    }
-    public void broadcastMessage() throws Exception{
-        for(PeerHandler peerHandler:peerHandlers){
-            if(!peerHandler.peerUsername.equals(peerUsername)){
+    private boolean live;
 
-                //panel.getCanvas().getMarks();
-                peerHandler.panel.getCanvas().repaint();
-                
-            }
-        }
-    }
-    public void checkConnectionNum() throws Exception{
-        if(peerHandlers.size() > 1){
-            panel.setGameState(GameState.PLAYING);
-            for(PeerHandler peerHandler:peerHandlers){
-                //if(!peerHandler.peerUsername.equals(peerUsername)){
-                    peerHandler.panel.getAiPlayer().takeTurn();
-                //}
-            }
-        }
-    }
-    public void removePeerHandler() throws Exception{
-        peerHandlers.remove(this);
-        //broadcastMessage("SERVER: " + peerUsername + " has left the chat!");
-    }
-    public void closeEverything(Socket socket) throws Exception{
-        removePeerHandler();
+    public PeerHandler(GamePanel gamePanel, Socket socket) {
         try {
-           
-            if (socket != null) {
-                socket.close();
-            }
+
+            this.gamePanel = gamePanel;
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        new Thread(this).start();
     }
-    // public ArrayList<GameElement> getMarks() {
-    //     return marks;
-    // }
+
+    public void sendMark(Object object) {
+        try {
+            oos.reset();
+            oos.writeObject(object);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+
+        live = true;
+        while (live) {
+            try {
+                Object object = ois.readObject();
+                gamePanel.getAiPlayer().markReceived(object);
+
+            } catch (EOFException | SocketException e) {
+                live = false;
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void coordSent(int x, int y) {
+    }
+
+    @Override
+    public void markReceived(Object object) {
+    }
+
+    @Override
+    public void close() {
+        try {
+            live = false;
+            ois.close();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

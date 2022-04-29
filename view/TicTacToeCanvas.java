@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import model.GameElement;
 import model.TicTacToe;
 import model.StatePattern.GamePlayerO;
-import model.StatePattern.GamePlayerState;
 import model.StatePattern.GamePlayerX;
 import model.TicTacToe.Line;
 import view.GamePanel.GameState;
@@ -24,7 +23,6 @@ public class TicTacToeCanvas extends JPanel {
     private ArrayList<GameElement> marks = new ArrayList<>();
     private int secondsLeft;
     private CopyOnWriteArrayList<String> textArray = new CopyOnWriteArrayList<>();
-    private TicTacToe ticTacToe;
 
     public TicTacToeCanvas(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -37,7 +35,8 @@ public class TicTacToeCanvas extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        if (gamePanel.getGameState() != GameState.WAITING_FOR_CONNECTION && gamePanel.getGameState() != GameState.TIMEOUT) {
+        if (gamePanel.getGameState() != GameState.WAITING_FOR_CONNECTION
+                && gamePanel.getGameState() != GameState.TIMEOUT) {
 
             // Tic Tac Toe Board
             g2.setColor(new Color(48, 99, 35));
@@ -69,35 +68,36 @@ public class TicTacToeCanvas extends JPanel {
 
                 g2.setColor(new Color(48, 99, 35));
                 g2.setFont(new Font("Courier", Font.BOLD, 30));
-
-                if (secondsLeft >= 0) {
-                    g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
-                } else {
-                    g2.drawString("Time Remaining: 0", 140, 550);
+                if (!gamePanel.isNetwork()) {
+                    if (secondsLeft >= 0) {
+                        g2.drawString("Time Remaining: " + secondsLeft, 140, 550);
+                    } else {
+                        g2.drawString("Time Remaining: 0", 140, 550);
+                    }
                 }
             }
-        } 
-        
+        }
+
         else if (gamePanel.getGameState() == GamePanel.GameState.WAITING_FOR_CONNECTION) {
             // Network Connections
             g2.setColor(Color.black);
             g2.setFont(new Font("Courier New", Font.BOLD, 25));
             int y = 150;
             g2.drawString("Waiting for network connection...", 65, y);
-            g2.setFont(new Font("Courier New", Font.PLAIN, 12));
+            g2.setFont(new Font("Courier New", Font.PLAIN, 20));
             for (String t : textArray) {
                 y += 30;
                 g2.drawString(t, 70, y);
             }
-        } 
-        
+        }
+
         else if (gamePanel.getGameState() == GamePanel.GameState.DRAW) {
             // Draw
             g2.setColor(Color.red);
             g2.setFont(new Font("Courier", Font.BOLD, 40));
             g2.drawString("Draw! No one wins!", 85, 60);
-        } 
-        
+        }
+
         else if (gamePanel.getGameState() == GamePanel.GameState.X_WIN) {
             // Winning Statement
             g2.setColor(Color.red);
@@ -116,8 +116,8 @@ public class TicTacToeCanvas extends JPanel {
 
             // Line
             drawWinningLine(g2);
-        } 
-        
+        }
+
         else if (gamePanel.getGameState() == GameState.TIMEOUT) {
             g2.setColor(Color.red);
             g2.setFont(new Font("Courier", Font.BOLD, 40));

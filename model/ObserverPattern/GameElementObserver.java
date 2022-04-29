@@ -5,7 +5,6 @@
  */
 
 package model.ObserverPattern;
-import model.StatePattern.GamePlayerState;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 

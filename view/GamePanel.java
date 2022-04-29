@@ -3,8 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,8 +10,7 @@ import javax.swing.JPanel;
 
 import controller.MouseEventListener;
 import controller.Peer;
-import controller.PeerHandler;
-import controller.EventListener;
+import controller.Server;
 import model.AI;
 import model.GamePlayer;
 import model.Player;
@@ -27,6 +24,9 @@ public class GamePanel {
         PLAYING, X_WIN, O_WIN, DRAW, WAITING_FOR_CONNECTION, TIMEOUT
     }
 
+    public static final int E = 0, X = 1, O = 2;
+    private int thisPlayer;
+    private int currentPlayer;
     private GameState gameState;
     private JFrame window;
     private TicTacToeCanvas canvas;
@@ -37,22 +37,17 @@ public class GamePanel {
     MouseEventListener mouseEventListener;
     private AI aiPlayer = new AI(this);
     private Player manPlayer = new Player(this);
-    private ObjectOutputStream oos;
-    private ObjectInputStream ois;
     private boolean mouseClick = false;
     private boolean network = false;
-    private Peer peer = null;
+    private boolean serverPeer = false; // true means server connection, false means peer connection
+    private Server serverObject = null;
+    private Peer peerObject = null;
 
     public GamePanel(JFrame window, boolean playerX) {
         this.window = window;
         this.playerX = playerX;
         window.setPreferredSize(new Dimension(600, 675));
     }
-    // public GamePanel(JFrame window, boolean playerX,Peer peer){
-    // this.window = window;
-    // this.playerX = playerX;
-    // this.peer = peer;
-    // }
 
     public void createStandAlonePanel() throws Exception {
         Container cp = window.getContentPane();
@@ -74,15 +69,11 @@ public class GamePanel {
         cp.add(BorderLayout.SOUTH, southPanel);
 
         // Start Game
-        // I'm not exactly sure if this is how you're supposed to start the game but it
-        // made sense to me -Vivian
-        // gamePlayer = new GamePlayer();
         gamePlayerTurn = new GamePlayerTurn(this);
         ticTacToeGame = new TicTacToe();
         gameState = GameState.PLAYING;
         GameElementObserver observer = new GameElementObserver(this);
         ticTacToeGame.subscribe(observer);
-        EventListener timerListener = new EventListener(this);
         network = false;
 
         // action listener
@@ -103,7 +94,12 @@ public class GamePanel {
         cp.setPreferredSize(new Dimension(600, 650));
         window.setTitle("Super-Tic-Tac-Toe (AI vs. AI)");
         playerX = !playerX;
-        aiPlayer.setPeer(peer);
+
+        if (playerX == true) {
+            thisPlayer = X;
+            aiPlayer.takeTurn();
+        } else
+            thisPlayer = O;
 
         // main tic-tac-toe panel
         JPanel mainPanel = new JPanel();
@@ -120,6 +116,7 @@ public class GamePanel {
 
         // Start Game
         gamePlayerTurn = new GamePlayerTurn(this);
+
         ticTacToeGame = new TicTacToe();
         gameState = GameState.WAITING_FOR_CONNECTION;
         GameElementObserver observer = new GameElementObserver(this);
@@ -132,11 +129,29 @@ public class GamePanel {
             window.pack();
             window.setVisible(true);
         });
-        // aiPlayer.takeTurn();
-        //checkIfConnected();
+
+        window.setVisible(true);
+
     }
 
-    
+    public boolean isMyTurn() {
+        if (thisPlayer == currentPlayer) {
+            return true;
+        } else
+            return false;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public int getThisPlayer() {
+        return thisPlayer;
+    }
 
     public boolean isNetwork() {
         return network;
@@ -170,24 +185,6 @@ public class GamePanel {
         return manPlayer;
     }
 
-    public void setOos(ObjectOutputStream oos) {
-        // System.out.println("oos set");
-        this.oos = oos;
-    }
-
-    public ObjectOutputStream getOos() {
-        return oos;
-    }
-
-    public void setOis(ObjectInputStream ois) {
-        // System.out.println("set ois method");
-        this.ois = ois;
-    }
-
-    public ObjectInputStream getOis() {
-        return ois;
-    }
-
     public void setMouseClick(boolean mouseClick) {
         this.mouseClick = mouseClick;
     }
@@ -196,11 +193,12 @@ public class GamePanel {
         return mouseClick;
     }
 
-    public void setPeer(Peer peer) {
-        this.peer = peer;
+    public boolean isServerPeer() {
+        return serverPeer;
     }
-    public Peer getPeer() {
-        return peer;
+
+    public void setServerPeer(boolean serverPeer) {
+        this.serverPeer = serverPeer;
     }
 
     public GameState getGameState() {
@@ -213,5 +211,21 @@ public class GamePanel {
 
     public void setGamePlayerTurn(GamePlayerTurn gamePlayerTurn) {
         this.gamePlayerTurn = gamePlayerTurn;
+    }
+
+    public Server getServerObject() {
+        return serverObject;
+    }
+
+    public void setServerObject(Server serverObject) {
+        this.serverObject = serverObject;
+    }
+
+    public Peer getPeerObject() {
+        return peerObject;
+    }
+
+    public void setPeerObject(Peer peerObject) {
+        this.peerObject = peerObject;
     }
 }

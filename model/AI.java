@@ -1,16 +1,11 @@
 package model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import controller.Peer;
-import controller.PeerHandler;
 import model.StatePattern.GamePlayerX;
 import view.GamePanel;
 import view.GamePanel.GameState;
@@ -47,44 +42,23 @@ public class AI implements Serializable {
 	}
 
 	private GamePanel gamePanel;
-	private int x;
-	private int y;
-	private ObjectOutputStream oos;
-	private ObjectInputStream ois;
-	private Peer peer;
+	private int row;
+	private int column;
 
 	public AI(GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
-		oos = gamePanel.getOos();
-		ois = gamePanel.getOis();
-
 	}
 
 	public void takeTurn() throws Exception {
-		if(gamePanel.getGameState() != GameState.PLAYING) return;
-		if (gamePanel.isNetwork() && PeerHandler.peerHandlers.size() <= 1) {
-			System.out.println("not enough players yet");
+		if (gamePanel.getGameState() != GameState.PLAYING)
 			return;
-		}
 
 		if ((gamePanel.getPlayerX() ^ gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX)) {
 
 			Coordinate bestMove = new Coordinate();
 			bestMove = lookForWinConditions(gamePanel.getTicTacToeGame().getGrid(), 2, 4, bestMove);
-			x = bestMove.row;
-			y = bestMove.col;
-
-			if(gamePanel.isNetwork() ){
-				//do stuff
-				peer = gamePanel.getPeer();
-				//System.out.println("send peer info");
-				if(peer != null){
-					System.out.println("actually send peer info");
-					peer.sendCoordinates(x, y);
-					
-					//peer.getCoordinates();
-				}
-			}
+			row = bestMove.row;
+			column = bestMove.col;
 
 			ArrayList<GameElement> marks = gamePanel.getCanvas().getMarks();
 
@@ -93,16 +67,22 @@ public class AI implements Serializable {
 			timer1.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					marks.add(new GameElement(gamePanel.getTicTacToeGame().getBoundingBox(x, y).x + 5,
-							gamePanel.getTicTacToeGame().getBoundingBox(x, y).y + 5,
+					marks.add(new GameElement(gamePanel.getTicTacToeGame().getBoundingBox(row, column).x + 5,
+							gamePanel.getTicTacToeGame().getBoundingBox(row, column).y + 5,
 							gamePanel.getGamePlayerTurn().getState()));
 					if (gamePanel.getGamePlayerTurn().getState() instanceof GamePlayerX) {
-						gamePanel.getTicTacToeGame().setEntry(x, y, 1); // Set to X
+						gamePanel.getTicTacToeGame().setEntry(row, column, 1); // Set to X
 					} else {
-						gamePanel.getTicTacToeGame().setEntry(x, y, 2); // Set to O
+						gamePanel.getTicTacToeGame().setEntry(row, column, 2); // Set to O
+					}
+					if (gamePanel.isNetwork()) {
+						if (gamePanel.isServerPeer()) {
+							gamePanel.getServerObject().coordSent(row, column);
+						} else {
+							gamePanel.getPeerObject().coordSent(row, column);
+						}
 					}
 					gamePanel.getCanvas().repaint();
-					// gamePanel.getTicTacToeGame().printGameBoard();
 
 					gamePanel.getTicTacToeGame().checkWin();
 					gamePanel.getTicTacToeGame().checkDraw();
@@ -118,16 +98,12 @@ public class AI implements Serializable {
 				@Override
 				public void run() {
 					gamePanel.getGamePlayerTurn().goNextState();
-					//System.out.print("Timer Ended");
 					timer2.cancel();
 					timer2.purge();
 				}
 			}, 5000L);
+
 			gamePanel.getCanvas().repaint();
-		}
-		else if(gamePanel.isNetwork()){
-			peer = gamePanel.getPeer();
-			peer.getCoordinates();
 		}
 
 	}
@@ -206,6 +182,14 @@ public class AI implements Serializable {
 		return bestMove;
 	}
 
+	public void markReceived(Object object) {
+		if(gamePanel.isServerPeer()){
+			gamePanel.getServerObject().markReceived(object);
+		}else {
+			gamePanel.getPeerObject().markReceived(object);
+		}
+	}
+
 	private Coordinate getBestMove(ArrayList<Coordinate> moves, int weight) {
 
 		// if win/lose condition -- make that move or block
@@ -242,7 +226,8 @@ public class AI implements Serializable {
 		return bestMove;
 	}
 
-	private Coordinate getConditionLocation(TicTacToe.TicTacToeSquare[][] grid, int line, String lineType, int condition) {
+	private Coordinate getConditionLocation(TicTacToe.TicTacToeSquare[][] grid, int line, String lineType,
+			int condition) {
 		Coordinate coordinate = new Coordinate();
 		switch (lineType) {
 			case "row":
@@ -362,10 +347,6 @@ public class AI implements Serializable {
 				break;
 		}
 		return line;
-	}
-
-	public void setPeer(Peer peer) {
-		this.peer = peer;
 	}
 
 }

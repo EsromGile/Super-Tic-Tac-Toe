@@ -4,11 +4,9 @@ import view.GamePanel;
 import view.GamePanel.GameState;
 
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class MouseEventListener implements MouseListener, ActionListener {
+public class MouseEventListener implements MouseListener {
 
 	private GamePanel saPanel;
 
@@ -28,7 +26,6 @@ public class MouseEventListener implements MouseListener, ActionListener {
 			// AI takes turn after player goes
 			saPanel.getAiPlayer().takeTurn();
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -47,10 +44,6 @@ public class MouseEventListener implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
 	}
 
 }

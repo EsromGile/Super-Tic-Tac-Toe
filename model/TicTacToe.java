@@ -67,18 +67,13 @@ public class TicTacToe implements Subject, Serializable{
 	public void setEntry(int row, int column, int newEntry) {
 		grid[row][column].entry = newEntry;
 	}
-
-	public void printGameBoard() {
-		for (int row = 0; row < 5; row++) {
-			for (int col = 0; col < 5; col++) {
-				System.out.print("[" + grid[row][col].entry + "]");
-			}
-			System.out.println();
-		}
-	}
 	
+
 	public TicTacToeSquare[][] getGrid() {
 		return grid;
+	}
+	public void setGrid(TicTacToeSquare[][] grid) {
+		this.grid = grid;
 	}
 
 	public boolean spotTaken(int x, int y){

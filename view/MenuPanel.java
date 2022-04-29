@@ -6,12 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import controller.EventListener;
@@ -26,14 +22,12 @@ public class MenuPanel {
     private JButton networkButton = new JButton("Network Mode");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
-    // private boolean network = false;
-    private boolean isPeerConnected = false;
     private EventListener listener = new EventListener(this);
 
     public MenuPanel(JFrame window) {
         this.window = window;
         window.setLocation(400, 100);
-		window.setTitle("Menu Screen");
+        window.setTitle("Menu Screen");
         window.setPreferredSize(new Dimension(500, 500));
     }
 
@@ -44,12 +38,8 @@ public class MenuPanel {
         JPanel menuPanel = new JPanel();
         JPanel southPanel = new JPanel();
         JPanel playerPanel = new JPanel();
-        // JPanel networkPanel = new JPanel();
         southPanel.setBorder(new EmptyBorder(0, 0, 50, 0));
-        //southPanel.setLayout(new GridLayout(2, 1));
-        //menuPanel.setLayout(new GridLayout(3,1));
 
-        //menuPanel.add(networkPanel);
         southPanel.add(playerPanel);
         GridBagLayout layout = new GridBagLayout();
         menuPanel.setLayout(layout);
@@ -73,30 +63,6 @@ public class MenuPanel {
         gbc.gridx = 0;
         gbc.gridy = 2;
         menuPanel.add(networkButton, gbc);
-
-        // bottom section
-        // GridBagLayout networkLayout = new GridBagLayout();
-        // networkPanel.setLayout(networkLayout);
-        // GridBagConstraints ngbc = new GridBagConstraints();
-
-        // Border compound;
-        // Border empty = new EmptyBorder(20, 0, 0, 0);
-        // Border title = BorderFactory.createTitledBorder(" Network Mode (connect peer will begin game): ");
-        // compound = BorderFactory.createCompoundBorder(empty, title);
-        // networkPanel.setBorder(compound);
-        // JLabel player = new JLabel("Enter IP:");
-        // ngbc.gridx = 0;
-        // ngbc.gridy = 0;
-        // networkPanel.add(player, ngbc);
-        // ngbc.gridx = 0;
-        // ngbc.gridy = 1;
-        // networkPanel.add(connectNetwork, ngbc);
-        // ngbc.gridx = 1;
-        // ngbc.gridy = 0;
-        // networkPanel.add(ipAddress, ngbc);
-        // ngbc.gridx = 1;
-        // ngbc.gridy = 1;
-        // networkPanel.add(connectPeer, ngbc);
 
         GridBagLayout southLayout = new GridBagLayout();
         playerPanel.setLayout(southLayout);
@@ -136,18 +102,6 @@ public class MenuPanel {
 
         standAloneButton.addActionListener(listener);
 
-        //networkButton.addActionListener(listener);
-        // connectPeer.addActionListener(listener);
-        // connectNetwork.addActionListener(listener);
-
-        // standAloneButton.addActionListener(event -> {
-        // window.getContentPane().removeAll();
-        // var panel = new GamePanel(window, playerOne.isSelected());
-        // panel.createStandAlonePanel();
-        // window.pack();
-        // window.setVisible(true);
-        // });
-
         networkButton.addActionListener(event -> {
             showNetworkOptions();
         });
@@ -181,12 +135,10 @@ public class MenuPanel {
 
         connectPeer.addActionListener(listener);
         connectNetwork.addActionListener(listener);
-        standAloneButton.addActionListener(listener);
 
         JPanel southPanel = new JPanel();
         JButton backButton = new JButton("Back");
         southPanel.add(backButton);
-
 
         backButton.addActionListener(event -> {
             window.getContentPane().removeAll();
@@ -201,8 +153,8 @@ public class MenuPanel {
         cp.add(BorderLayout.SOUTH, southPanel);
 
         window.pack();
-		window.setVisible(true);
-        
+        window.setVisible(true);
+
     }
 
     public JButton getConnectPeer() {
@@ -216,8 +168,6 @@ public class MenuPanel {
     public JTextField getIpAddress() {
         return ipAddress;
     }
-
-    
 
     public JButton getStandAloneButton() {
         return standAloneButton;
@@ -233,16 +183,6 @@ public class MenuPanel {
 
     public JRadioButton getPlayerTwo() {
         return playerTwo;
-    }
-
-   
-
-    public boolean isPeerConnected() {
-        return isPeerConnected;
-    }
-
-    public void setPeerConnected(boolean isPeerConnected) {
-        this.isPeerConnected = isPeerConnected;
     }
 
 }
