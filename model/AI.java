@@ -195,7 +195,9 @@ public class AI implements Serializable {
 		// if win/lose condition -- make that move or block
 		if (weight == 4) {
 			for (Coordinate coordinate : moves) {
-				if (coordinate.value == 1 || coordinate.value == -1)
+				if (coordinate.value == 1)
+					return coordinate;
+				else if (coordinate.value == -1)
 					return coordinate;
 			}
 		}
