@@ -46,6 +46,6 @@ public class StartPanel {
                     timer.cancel();
                     timer.purge();
 				}
-			}, 7000);
+			}, 3000);
     }
 }

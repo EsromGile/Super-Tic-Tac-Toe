@@ -19,7 +19,8 @@ public class MenuPanel {
     private JButton connectPeer = new JButton("Join a Server");
     private JTextField ipAddress = new JTextField(15);
     private JButton standAloneButton = new JButton("Stand Alone Mode");
-    private JButton networkButton = new JButton("Network Mode");
+    // private JButton networkButton = new JButton("Network Mode");
+    private JButton networkButton = new JButton("Network Mode (Unavailable)");
     private JRadioButton playerOne = new JRadioButton("Player X (Go First)");
     private JRadioButton playerTwo = new JRadioButton("Player O (Go Second)");
     private EventListener listener = new EventListener(this);
@@ -105,6 +106,9 @@ public class MenuPanel {
         networkButton.addActionListener(event -> {
             showNetworkOptions();
         });
+
+        // disable network button
+        networkButton.setEnabled(false);
 
     }
 

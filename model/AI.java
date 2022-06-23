@@ -101,7 +101,7 @@ public class AI implements Serializable {
 					timer2.cancel();
 					timer2.purge();
 				}
-			}, 5000L);
+			}, 2000L);
 
 			gamePanel.getCanvas().repaint();
 		}
